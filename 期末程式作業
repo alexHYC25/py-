@@ -1,19 +1,48 @@
 import tkinter as tk
 from tkinter import messagebox
+from PIL import Image, ImageTk 
+import imageio
+
+def show_image():
+    # 在這裡顯示你想要彈出的圖片
+    image_path = "S__123486210.jpg"  # 替換為你的成功圖片檔案名稱或路徑
+    success_image = Image.open(image_path)
+    success_photo = ImageTk.PhotoImage(success_image)
+
+    image_window = tk.Toplevel(root)
+    image_window.attributes("-fullscreen", True)
+
+    # 設置窗口大小和位置，使其充滿整個屏幕
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
+    image_window.geometry("{}x{}+0+0".format(screen_width, screen_height))
+
+    image_label = tk.Label(image_window, image=success_photo)
+    image_label.photo = success_photo
+    image_label.pack(expand=True, fill="both")
+
+
 
 def check_login():
     username = entry_username.get()
     password = entry_password.get()
 
     # 在這裡應該有一個真實的登入驗證機制，這裡僅提供一個簡單的範例
-    if username == "admin" and password == "password":
+    if username == "123" and password == "123":
         messagebox.showinfo("登入成功", "歡迎回來，{}".format(username))
+        show_image()
     else:
         messagebox.showerror("登入失敗", "使用者名稱或密碼錯誤")
 
 # 建立主視窗
 root = tk.Tk()
 root.title("使用者登入")
+
+# 設定窗口背景圖片
+bg_image = Image.open("使用者驗證介面.jpg")  # 替換為你的背景圖片檔案名稱或路徑
+bg_photo = ImageTk.PhotoImage(bg_image)
+bg_label = tk.Label(root, image=bg_photo)
+bg_label.place(relwidth=1, relheight=1)
 
 # 使用者名稱標籤和輸入框
 label_username = tk.Label(root, text="使用者名稱:")
@@ -33,3 +62,5 @@ login_button.pack(pady=20)
 
 # 啟動主迴圈
 root.mainloop()
+
+
