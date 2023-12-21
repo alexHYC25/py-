@@ -1,42 +1,39 @@
+
 import tkinter as tk
 from tkinter import messagebox
-from PIL import Image, ImageTk 
-import imageio
-
-def show_image():
-    # 在這裡顯示你想要彈出的圖片
-    image_path = "S__123486210.jpg"  # 替換為你的成功圖片檔案名稱或路徑
-    success_image = Image.open(image_path)
-    success_photo = ImageTk.PhotoImage(success_image)
-
-    image_window = tk.Toplevel(root)
-    image_window.attributes("-fullscreen", True)
-
-    # 設置窗口大小和位置，使其充滿整個屏幕
-    screen_width = root.winfo_screenwidth()
-    screen_height = root.winfo_screenheight()
-    image_window.geometry("{}x{}+0+0".format(screen_width, screen_height))
-
-    image_label = tk.Label(image_window, image=success_photo)
-    image_label.photo = success_photo
-    image_label.pack(expand=True, fill="both")
+from PIL import Image, ImageTk
 
 
+def toggle_fullscreen(event=None): # 切換全螢幕模式
+    state = not root.attributes('-fullscreen')
+    root.attributes('-fullscreen', state)
+    root.geometry('{0}x{1}+0+0'.format(root.winfo_screenwidth(), root.winfo_screenheight()))
 
-def check_login():
+
+def check_login():# 檢查登入資料
     username = entry_username.get()
     password = entry_password.get()
 
-    # 在這裡應該有一個真實的登入驗證機制，這裡僅提供一個簡單的範例
     if username == "123" and password == "123":
         messagebox.showinfo("登入成功", "歡迎回來，{}".format(username))
-        show_image()
+        open_index()
     else:
         messagebox.showerror("登入失敗", "使用者名稱或密碼錯誤")
+
+
+def open_index():# 開啟首頁
+    index = tk.Toplevel(root)
+    index.title("首頁")
+    index.attributes('-fullscreen', True)   # 全螢幕
+    index.bind('<Escape>', toggle_fullscreen) # 按Esc切換全螢幕模式
+    listbox = tk.Listbox(index)
+    listbox.pack()
 
 # 建立主視窗
 root = tk.Tk()
 root.title("使用者登入")
+root.attributes('-fullscreen', True)   # 全螢幕
+root.bind('<Escape>', toggle_fullscreen) # 按Esc切換全螢幕模式
 
 # 設定窗口背景圖片
 bg_image = Image.open("使用者驗證介面.jpg")  # 替換為你的背景圖片檔案名稱或路徑
@@ -45,22 +42,35 @@ bg_label = tk.Label(root, image=bg_photo)
 bg_label.place(relwidth=1, relheight=1)
 
 # 使用者名稱標籤和輸入框
-label_username = tk.Label(root, text="使用者名稱:")
+title = tk.Label(root, text="個人財務管理系統", font=("Arial", 44), fg="white", bg="#000000")
+title.pack(pady=20)
+
+# 使用者名稱標籤和輸入框
+label_username = tk.Label(root, text="使用者名稱:", font=("Arial", 16), fg="white", bg="#000000")
 label_username.pack(pady=10)
-entry_username = tk.Entry(root)
+entry_username = tk.Entry(root, font=("Arial", 14))
 entry_username.pack(pady=10)
 
 # 密碼標籤和輸入框
-label_password = tk.Label(root, text="密碼:")
+label_password = tk.Label(root, text="密碼:", font=("Arial", 16), fg="white", bg="#000000")
 label_password.pack(pady=10)
-entry_password = tk.Entry(root, show="*")  # 以星號顯示密碼
+entry_password = tk.Entry(root, show="*", font=("Arial", 14))  # 以星號顯示密碼
 entry_password.pack(pady=10)
 
 # 登入按鈕
-login_button = tk.Button(root, text="登入", command=check_login)
-login_button.pack(pady=20)
+login_button = tk.Button(root, text="登入", command=check_login, font=("Arial", 18), bg="#4CAF50", fg="white", padx=15, pady=8)
+login_button.pack(pady=30)
+
+
+
+
+
+
+
+
 
 # 啟動主迴圈
 root.mainloop()
+
 
 
