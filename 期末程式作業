@@ -76,14 +76,34 @@ def open_index():  # 開啟首頁
     # 創建一個 Frame 作為框起來的區域
     frame_labels_income = Tk.Frame(index, bd=2, relief=Tk.GROOVE)
     frame_labels_income.place(x=680, y=590, width=150, height=120)
-
-    # 創建第一個 Label
+    # 創建本月收入金額Label
     label = Tk.Label(frame_labels_income, text="本月收入金額", font=("Arial", 16))
     label.pack(side=Tk.TOP, pady=5)
-
-    # 創建第二個 Label
+    # 創建收入金額顯示 Label
     label_cost_num = Tk.Label(frame_labels_income, text="此處放收入金額")
     label_cost_num.pack(side=Tk.TOP)
+
+    #本月盈餘金額計算
+    # 創建一個 Frame 作為框起來的區域
+    frame_labels_surplus = Tk.Frame(index, bd=2, relief=Tk.GROOVE)
+    frame_labels_surplus.place(x=1050, y=400, width=150, height=100)
+    # 創建本月盈餘金額Label
+    label = Tk.Label(frame_labels_surplus, text="本月盈餘金額", font=("Arial", 16))
+    label.pack(side=Tk.TOP, pady=5)
+    # 創建盈餘金額顯示 Label
+    label_cost_get = Tk.Label(frame_labels_surplus, text="此處放盈餘金額")
+    label_cost_get.pack(side=Tk.TOP)
+
+    #全部期間收支金額計算
+    # 創建一個 Frame 作為框起來的區域
+    frame_labels_all = Tk.Frame(index, bd=2, relief=Tk.GROOVE)
+    frame_labels_all.place(x=1050, y=500, width=150, height=100)
+    # 創建全部期間收支金額Label
+    label = Tk.Label(frame_labels_all, text="全部期間收支金額", font=("Arial", 12))
+    label.pack(side=Tk.TOP, pady=5)
+    # 創建全部期間收支金額顯示 Label
+    label_cost_get = Tk.Label(frame_labels_all, text="此處放全部期間收支金額")
+    label_cost_get.pack(side=Tk.TOP)
 
 
 def open_cost():  # 開啟支出介面
