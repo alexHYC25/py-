@@ -4,8 +4,7 @@ from tkinter import messagebox,Button, Frame
 import tkinter as Tk
 from PIL import Image, ImageTk
 from ttkbootstrap import Style
-
-
+from datetime import date, timedelta
 def toggle_fullscreen(event=None): # 切換全螢幕模式
     state = not root.attributes('-fullscreen')
     root.attributes('-fullscreen', state)
@@ -29,6 +28,10 @@ def open_index():  # 開啟首頁
     index.attributes('-fullscreen', True)   # 全螢幕
     index.bind('<Escape>', toggle_fullscreen) # 按Esc切換全螢幕模式
 
+    #設定日期
+    current_date = date.today()  # 取得當前日期
+    date_label = Tk.Label(index, text=current_date.strftime("日期: %Y-%m-%d"), font=("Arial", 40))
+    date_label.place(x=440, y=50)
 
     #設定支出按鈕
     button_cost = Tk.Button(index, text="支出", command=open_cost, font=("Arial", 16), bg="white", fg="black", padx=10, pady=5, relief="raised", bd=2)
@@ -104,7 +107,6 @@ def open_index():  # 開啟首頁
     # 創建全部期間收支金額顯示 Label
     label_cost_get = Tk.Label(frame_labels_all, text="此處放全部期間收支金額")
     label_cost_get.pack(side=Tk.TOP)
-
 
 def open_cost():  # 開啟支出介面
     cost = Tk.Toplevel(root)
