@@ -1,7 +1,9 @@
 
-import tkinter as tk
-from tkinter import messagebox
+from tkinter import Tk
+from tkinter import messagebox,Button, Frame
+import tkinter as Tk
 from PIL import Image, ImageTk
+from ttkbootstrap import Style
 
 
 def toggle_fullscreen(event=None): # 切換全螢幕模式
@@ -14,23 +16,103 @@ def check_login():# 檢查登入資料
     username = entry_username.get()
     password = entry_password.get()
 
-    if username == "123" and password == "123":
+    if username == "1" and password == "1":
         messagebox.showinfo("登入成功", "歡迎回來，{}".format(username))
         open_index()
     else:
         messagebox.showerror("登入失敗", "使用者名稱或密碼錯誤")
 
-
-def open_index():# 開啟首頁
-    index = tk.Toplevel(root)
+##以下為首頁程式選擇介面
+def open_index():  # 開啟首頁
+    index = Tk.Toplevel(root)
     index.title("首頁")
     index.attributes('-fullscreen', True)   # 全螢幕
     index.bind('<Escape>', toggle_fullscreen) # 按Esc切換全螢幕模式
-    listbox = tk.Listbox(index)
-    listbox.pack()
+
+
+    #設定支出按鈕
+    button_cost = Tk.Button(index, text="支出", command=open_cost, font=("Arial", 16), bg="white", fg="black", padx=10, pady=5, relief="raised", bd=2)
+    button_cost.pack()
+    button_cost.place(x=500, y=500,width=100, height=50)
+    
+    
+    #設定收入按鈕
+    button_income = Tk.Button(index, text="收入", command=open_income, font=("Arial", 16), bg="white", fg="black", padx=10, pady=5, relief="raised", bd=2)
+    button_income.pack()
+    button_income.place(x=700, y=500,width=100, height=50)
+
+    # 創建一個 Frame 作為表格容器
+    button_frame = Frame(index)
+    button_frame.place(x=1000,y=30)
+
+    #設定財務目標按鈕
+    button_goal = Tk.Button(button_frame , text="財務目標", command=open_goal, font=("Arial", 16), bg="white", fg="black", padx=10, pady=5, relief="raised", bd=2,borderwidth=10)
+    button_goal.grid(row=0, column=0, sticky="ew")
+
+    #設定財務圖表分析按鈕
+    button_analysis = Tk.Button(button_frame , text="財務圖表分析", command=open_analysis, font=("Arial", 16), bg="white", fg="black", padx=10, pady=5, relief="raised", bd=2,borderwidth=10)
+    button_analysis.grid(row=1, column=0, sticky="ew")
+
+    #財務分析與建議按鈕
+    button_suggestion = Tk.Button(button_frame , text="財務分析與建議", command=open_suggestion, font=("Arial", 16), bg="white", fg="black", padx=10, pady=5, relief="raised", bd=2,borderwidth=10)
+    button_suggestion.grid(row=2, column=0, sticky="ew")
+
+    button_frame.grid_columnconfigure(0, weight=1, uniform="equal") # 設定欄寬
+
+    #本月支出金額計算
+    # 創建一個 Frame 作為框起來的區域
+    frame_labels_cost = Tk.Frame(index, bd=2, relief=Tk.GROOVE)
+    frame_labels_cost.place(x=480, y=590, width=150, height=120)
+
+    # 創建第一個 Label
+    label_cost = Tk.Label(frame_labels_cost, text="本月支出金額", font=("Arial", 16))
+    label_cost.pack(side=Tk.TOP, pady=5)
+
+    # 創建第二個 Label
+    label_cost_num = Tk.Label(frame_labels_cost, text="此處放支出金額")
+    label_cost_num.pack(side=Tk.TOP)
+    
+    #本月收入金額計算
+    # 創建一個 Frame 作為框起來的區域
+    frame_labels_income = Tk.Frame(index, bd=2, relief=Tk.GROOVE)
+    frame_labels_income.place(x=680, y=590, width=150, height=120)
+
+    # 創建第一個 Label
+    label = Tk.Label(frame_labels_income, text="本月收入金額", font=("Arial", 16))
+    label.pack(side=Tk.TOP, pady=5)
+
+    # 創建第二個 Label
+    label_cost_num = Tk.Label(frame_labels_income, text="此處放收入金額")
+    label_cost_num.pack(side=Tk.TOP)
+
+
+def open_cost():  # 開啟支出介面
+    cost = Tk.Toplevel(root)
+    cost.title("支出")
+    
+
+def open_income():  # 開啟收入介面
+    income = Tk.Toplevel(root)
+    income.title("收入")
+    
+
+def open_goal():  # 開啟財務目標介面
+    goal = Tk.Toplevel(root)
+    goal.title("財務目標")
+
+
+def open_analysis():  # 開啟財務圖表分析介面
+    analysis = Tk.Toplevel(root)
+    analysis.title("財務圖表分析")
+
+
+def open_suggestion():  # 開啟財務分析與建議介面
+    suggestion = Tk.Toplevel(root)
+    suggestion.title("財務分析與建議")
+
 
 # 建立主視窗
-root = tk.Tk()
+root = Tk.Tk()
 root.title("使用者登入")
 root.attributes('-fullscreen', True)   # 全螢幕
 root.bind('<Escape>', toggle_fullscreen) # 按Esc切換全螢幕模式
@@ -38,39 +120,30 @@ root.bind('<Escape>', toggle_fullscreen) # 按Esc切換全螢幕模式
 # 設定窗口背景圖片
 bg_image = Image.open("使用者驗證介面.jpg")  # 替換為你的背景圖片檔案名稱或路徑
 bg_photo = ImageTk.PhotoImage(bg_image)
-bg_label = tk.Label(root, image=bg_photo)
+bg_label = Tk.Label(root, image=bg_photo)
 bg_label.place(relwidth=1, relheight=1)
 
 # 使用者名稱標籤和輸入框
-title = tk.Label(root, text="個人財務管理系統", font=("Arial", 44), fg="white", bg="#000000")
+title = Tk.Label(root, text="個人財務管理系統", font=("Arial", 44), fg="white", bg="#000000")
 title.pack(pady=20)
 
 # 使用者名稱標籤和輸入框
-label_username = tk.Label(root, text="使用者名稱:", font=("Arial", 16), fg="white", bg="#000000")
+label_username = Tk.Label(root, text="使用者名稱:", font=("Arial", 16), fg="white", bg="#000000")
 label_username.pack(pady=10)
-entry_username = tk.Entry(root, font=("Arial", 14))
+entry_username = Tk.Entry(root, font=("Arial", 14))
 entry_username.pack(pady=10)
 
 # 密碼標籤和輸入框
-label_password = tk.Label(root, text="密碼:", font=("Arial", 16), fg="white", bg="#000000")
+label_password = Tk.Label(root, text="密碼:", font=("Arial", 16), fg="white", bg="#000000")
 label_password.pack(pady=10)
-entry_password = tk.Entry(root, show="*", font=("Arial", 14))  # 以星號顯示密碼
+entry_password = Tk.Entry(root, show="*", font=("Arial", 14))  # 以星號顯示密碼
 entry_password.pack(pady=10)
 
 # 登入按鈕
-login_button = tk.Button(root, text="登入", command=check_login, font=("Arial", 18), bg="#4CAF50", fg="white", padx=15, pady=8)
+login_button = Tk.Button(root, text="登入", command=check_login, font=("Arial", 18), bg="#4CAF50", fg="white", padx=15, pady=8)
 login_button.pack(pady=30)
-
-
-
-
-
-
-
 
 
 # 啟動主迴圈
 root.mainloop()
-
-
 

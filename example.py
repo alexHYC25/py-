@@ -57,3 +57,20 @@ frame.pack()
 #進度條（Progressbar）：
 progress = tk.Progressbar(root, orient="horizontal", length=100, mode="determinate")
 progress.pack()
+
+#可以使用 pack, grid 或 place 等方法來自行決定物件的位置。以下是三種方法的簡單示例(以按鈕為例)：
+#使用 pack 方法：
+login_button = tk.Button(root, text="登入", command=check_login, font=("Arial", 18), bg="#4CAF50", fg="white", padx=15, pady=8)
+login_button.pack(side="bottom", pady=30)
+#在這個例子中，side="bottom" 表示將按鈕放在底部，pady=30 表示在按鈕下方添加 30 個像素的垂直間距。
+
+#使用 grid 方法：
+login_button = tk.Button(root, text="登入", command=check_login, font=("Arial", 18), bg="#4CAF50", fg="white", padx=15, pady=8)
+login_button.grid(row=1, column=0, pady=30)
+#在這個例子中，row=1 和 column=0 表示按鈕將位於第二行（索引從 0 開始）的第一列，pady=30 表示在按鈕下方添加 30 個像素的垂直間距。
+
+
+#使用 place 方法：
+login_button = tk.Button(root, text="登入", command=check_login, font=("Arial", 18), bg="#4CAF50", fg="white", padx=15, pady=8)
+login_button.place(relx=0.5, rely=0.9, anchor="s")
+#在這個例子中，relx=0.5 和 rely=0.9 表示按鈕將位於視窗寬度和高度的 50% 和 90% 的位置，anchor="s" 表示按鈕將在其定位點的底部。
