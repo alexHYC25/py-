@@ -37,12 +37,3 @@ add_custom_button.place(x=950, y=50)
 root.mainloop()
 
 #此為測試共用功能!!!!!黃彥誠
-
-
-
-
-
-
-
-
-
