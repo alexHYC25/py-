@@ -74,3 +74,23 @@ login_button.grid(row=1, column=0, pady=30)
 login_button = tk.Button(root, text="登入", command=check_login, font=("Arial", 18), bg="#4CAF50", fg="white", padx=15, pady=8)
 login_button.place(relx=0.5, rely=0.9, anchor="s")
 #在這個例子中，relx=0.5 和 rely=0.9 表示按鈕將位於視窗寬度和高度的 50% 和 90% 的位置，anchor="s" 表示按鈕將在其定位點的底部。
+
+#日期選擇器：
+from tkcalendar import DateEntry
+def get_selected_date():
+    selected_date = cal.get_date()
+    print("Selected Date:", selected_date)
+# 创建主窗口
+root = tk.Tk()
+root.title("Date Picker Example")
+# 创建日期选择器
+cal = DateEntry(root, width=12, background="darkblue", foreground="white", borderwidth=2)
+cal.pack(padx=10, pady=10)
+# 创建按钮以获取选定的日期
+btn_get_date = tk.Button(root, text="Get Selected Date", command=get_selected_date)
+btn_get_date.pack(pady=10)
+
+
+# 創建下拉式選單
+combo = ttk.Combobox(root, textvariable=combo_var, values=["選項1", "選項2", "選項3"])
+combo.pack(pady=20)

@@ -3,8 +3,10 @@ from tkinter import Tk
 from tkinter import messagebox,Button, Frame
 import tkinter as Tk
 from PIL import Image, ImageTk
-from ttkbootstrap import Style
+from tkinter import ttk, simpledialog
 from datetime import date, timedelta
+from tkcalendar import Calendar
+
 def toggle_fullscreen(event=None): # 切換全螢幕模式
     state = not root.attributes('-fullscreen')
     root.attributes('-fullscreen', state)
@@ -111,7 +113,49 @@ def open_index():  # 開啟首頁
 def open_cost():  # 開啟支出介面
     cost = Tk.Toplevel(root)
     cost.title("支出")
+    #cost.attributes('-fullscreen', True)   # 全螢幕
+    label_cost = Tk.Label(cost, text="請選擇支出日期", font=("Arial", 16))
+    label_cost.place(x=300, y=50)
+    # 創建日期選擇器
+    cal = Calendar(cost, selectmode="day", year=date.today().year, month=date.today().month, day=date.today().day)
+    cal.place(x=270, y=100)
+    # 創建一個 Label 用來顯示選擇的日期
+    selected_date_label = Tk.Label(cost, text="", font=("Arial", 16))
+    selected_date_label.place(x=270, y=350)
+    # 創建一個函式用來取得選擇的日期
+    def get_selected_date():
+        selected_date = cal.get_date()
+        selected_date_label.config(text=f"選擇的日期: {selected_date}")
+    # 創建一個按鈕用來取得選擇的日期
+    btn_get_date = Tk.Button(cost, text="獲取日期", command=get_selected_date, font=("Arial", 14))
+    btn_get_date.place(x=330, y=300)
     
+    #以下為支出項目選擇
+    cost_variety = Tk.Label(cost, text="請選擇支出項目", font=("Arial", 14))
+    cost_variety.place(x=650, y=50)
+    combo_var = Tk.StringVar()# 創建一個變數來存儲選擇的值
+    combo = ttk.Combobox(cost, textvariable=combo_var, values=["飲食", "日常用品", "交通"])
+    combo.place(x=850, y=50)
+    
+    def on_select(event):
+        selected_value = combo_var.get()
+        print(f"Selected value: {selected_value}")
+
+    def add_custom_category():
+        new_category = simpledialog.askstring("新增支出項目", "請輸入新的支出項目:")
+        if new_category:
+            combo['values'] = list(combo['values']) + [new_category]
+            combo.set(new_category)
+            print(f"新增的支出項目: {new_category}")
+
+    add_custom_button = Tk.Button(cost, text="自訂", command=add_custom_category, font=("Arial", 12))
+    add_custom_button.place(x=1050, y=45)
+    
+    #以下為支出金額輸入
+    cost_num = Tk.Label(cost, text="請輸入花費的金額", font=("Arial", 14))
+    cost_num.place(x=650, y=80)
+    cost_money_entry = Tk.Entry(cost,width=22)
+    cost_money_entry.place(x=850, y=80)
 
 def open_income():  # 開啟收入介面
     income = Tk.Toplevel(root)
