@@ -12,6 +12,8 @@ def add_custom_category():
         combo.set(new_category)
         print(f"新增的支出項目: {new_category}")
 
+#此為測試共用功能!!!!!黃彥誠2
+
 # 創建主視窗
 root = tk.Tk()
 root.title("支出")
