@@ -1,4 +1,3 @@
-
 from tkinter import Tk
 from tkinter import messagebox,Button, Frame,Listbox, Scrollbar
 import tkinter as Tk
@@ -414,4 +413,3 @@ login_button.pack(pady=30)
 
 # 啟動主迴圈
 root.mainloop()
-
