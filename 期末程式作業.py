@@ -1,4 +1,3 @@
-
 from tkinter import Tk
 from tkinter import messagebox,Button, Frame,Listbox, Scrollbar
 import tkinter as Tk
@@ -6,7 +5,8 @@ from PIL import Image, ImageTk
 from tkinter import ttk, simpledialog
 from datetime import date, timedelta
 from tkcalendar import Calendar
-
+total_amount=0
+total_cost=0
 def toggle_fullscreen(event=None): # 切換全螢幕模式
     state = not root.attributes('-fullscreen')
     root.attributes('-fullscreen', state)
@@ -109,6 +109,7 @@ def open_index():  # 開啟首頁
     label_cost_get = Tk.Label(frame_labels_all, text="此處放全部期間收支金額")
     label_cost_get.pack(side=Tk.TOP)
 
+###-----支出頁面-----###
 def open_cost():  # 開啟支出介面
     cost = Tk.Toplevel(root)
     cost.title("支出")
@@ -121,10 +122,71 @@ def open_cost():  # 開啟支出介面
     # 創建一個 Label 用來顯示選擇的日期
     selected_date_label = Tk.Label(cost, text="", font=("Arial", 16))
     selected_date_label.place(x=270, y=350)
+    
+    record_listbox = Listbox(cost, width=50, height=10)
+    record_listbox.place(x=650, y=150)
     # 創建一個函式用來取得選擇的日期
     def get_selected_date():
         selected_date = cal.get_date()
         selected_date_label.config(text=f"選擇的日期: {selected_date}")
+
+    def add_record():
+        global total_amount
+
+        date_str = selected_date_label.cget("text")
+        category = combo_var.get()
+        amount_str = cost_money_entry.get()
+
+        try:
+            # 將輸入的金額轉換為浮點數
+            amount = float(amount_str)
+
+            # 更新總金額變數
+            total_amount += amount
+
+            # 更新列表
+            record = f"{date_str}, 項目: {category}, 金額: {amount}"
+            record_listbox.insert(Tk.END, record)
+
+            # 清空輸入框
+            cost_money_entry.delete(0, Tk.END)
+
+            # 顯示目前總金額
+            目前_累計金額_顯示.config(text= total_amount)
+
+        except ValueError:
+            # 處理金額不是有效數字的情況
+            print("請輸入有效的金額。")
+
+    
+    def delete_selected():
+        global total_amount
+
+        selected_index = record_listbox.curselection()
+        if selected_index:
+            # 獲取刪除的項目資訊
+            deleted_item = record_listbox.get(selected_index)
+        
+            # 切割資訊以獲取金額
+            amount_str = deleted_item.split("金額:")[1].strip()
+
+            try:
+                # 將刪除的金額轉換為浮點數
+                deleted_amount = float(amount_str)
+
+                # 更新總金額變數
+                total_amount -= deleted_amount
+
+                # 刪除列表中的項目
+                record_listbox.delete(selected_index)
+
+                # 顯示更新後的總金額
+                目前_累計金額_顯示.config(text=total_amount)
+
+            except ValueError:
+                # 處理金額不是有效數字的情況
+                print("金額格式錯誤。")
+        
     # 創建一個按鈕用來取得選擇的日期
     btn_get_date = Tk.Button(cost, text="獲取日期", command=get_selected_date, font=("Arial", 14))
     btn_get_date.place(x=330, y=300)
@@ -156,35 +218,149 @@ def open_cost():  # 開啟支出介面
     cost_money_entry = Tk.Entry(cost,width=22)
     cost_money_entry.place(x=850, y=80)
 
-    record_listbox = Listbox(cost, width=40, height=10)
-    record_listbox.place(x=650, y=150)
+    # 創建新增紀錄的按鈕
+    btn_add_record = Tk.Button(cost, text="新增紀錄", command=add_record, font=("Arial", 12))
+    btn_add_record.place(x=1100, y=200)
 
-    def add_record():
-        # 在這裡使用選擇的日期
-        global selected_date
-        date_str = str(selected_date)
-        category = combo_var.get()
-        amount = cost_money_entry.get()
-        record = f"日期: {date_str}, 項目: {category}, 金額: {amount}"
-        record_listbox.insert(Tk.END, record)
+    # 創建刪除所選項目的按鈕
+    btn_delete_record = Tk.Button(cost, text="刪除選定項目", command=delete_selected, font=("Arial", 12))
+    btn_delete_record.place(x=1100, y=250)
 
-    def delete_record():
-        selected_index = record_listbox.curselection()
-        if selected_index:
-            record_listbox.delete(selected_index)
+    #本月金額計算
+    目前_累計金額 = Tk.Label(cost, text="目前支出總金額", font=("Arial", 18))
+    目前_累計金額 .place(x=1100, y=500)
+    目前_累計金額_顯示 = Tk.Label(cost,font=("Arial", 18))
+    目前_累計金額_顯示.place(x=1150, y=550)
 
-    # 新增按鈕用來新增紀錄
-    add_record_button = Tk.Button(cost, text="新增紀錄", command=add_record, font=("Arial", 14))
-    add_record_button.place(x=650, y=330)
+    
 
-    # 新增按鈕用來刪除紀錄
-    delete_record_button = Tk.Button(cost, text="刪除選定紀錄", command=delete_record, font=("Arial", 14))
-    delete_record_button.place(x=795, y=330)
 
+###-----收入頁面-----###
 def open_income():  # 開啟收入介面
     income = Tk.Toplevel(root)
     income.title("收入")
+    #income.attributes('-fullscreen', True)   # 全螢幕
+    label_income = Tk.Label(income, text="請選擇收入日期", font=("Arial", 16))
+    label_income.place(x=300, y=50)
+    # 創建日期選擇器
+    cal = Calendar(income, selectmode="day", year=date.today().year, month=date.today().month, day=date.today().day)
+    cal.place(x=270, y=100)
+    # 創建一個 Label 用來顯示選擇的日期
+    selected_date_label = Tk.Label(income, text="", font=("Arial", 16))
+    selected_date_label.place(x=270, y=350)
     
+    record_listbox = Listbox(income, width=50, height=10)
+    record_listbox.place(x=650, y=150)
+    # 創建一個函式用來取得選擇的日期
+    def get_selected_date():
+        selected_date = cal.get_date()
+        selected_date_label.config(text=f"選擇的日期: {selected_date}")
+
+    def add_record():
+        global total_cost
+
+        date_str = selected_date_label.cget("text")
+        category = combo_var.get()
+        amount_str = income_money_entry.get()
+
+        try:
+            # 將輸入的金額轉換為浮點數
+            amount = float(amount_str)
+
+            # 更新總金額變數
+            total_cost += amount
+
+            # 更新列表
+            record = f"{date_str}, 項目: {category}, 金額: {amount}"
+            record_listbox.insert(Tk.END, record)
+
+            # 清空輸入框
+            income_money_entry.delete(0, Tk.END)
+
+            # 顯示目前總金額
+            目前_累計金額_顯示.config(text= total_cost)
+
+        except ValueError:
+            # 處理金額不是有效數字的情況
+            print("請輸入有效的金額。")
+    
+    def delete_selected():
+        global total_cost
+
+        selected_index = record_listbox.curselection()
+        if selected_index:
+            # 獲取刪除的項目資訊
+            deleted_item = record_listbox.get(selected_index)
+        
+            # 切割資訊以獲取金額
+            amount_str = deleted_item.split("金額:")[1].strip()
+
+            try:
+                # 將刪除的金額轉換為浮點數
+                deleted_amount = float(amount_str)
+
+                # 更新總金額變數
+                total_cost -= deleted_amount
+
+                # 刪除列表中的項目
+                record_listbox.delete(selected_index)
+
+                # 顯示更新後的總金額
+                目前_累計金額_顯示.config(text=total_cost)
+
+            except ValueError:
+                # 處理金額不是有效數字的情況
+                print("金額格式錯誤。")
+    
+    # 創建一個按鈕用來取得選擇的日期
+    btn_get_date = Tk.Button(income, text="獲取日期", command=get_selected_date, font=("Arial", 14))
+    btn_get_date.place(x=330, y=300)
+
+    #以下為收入項目選擇
+    income_variety = Tk.Label(income, text="請選擇收入項目", font=("Arial", 14))
+    income_variety.place(x=650, y=50)
+    combo_var = Tk.StringVar()# 創建一個變數來存儲選擇的值
+    combo = ttk.Combobox(income, textvariable=combo_var, values=["薪水", "獎金", "投資", "其他" ])
+    combo.place(x=850, y=50)
+
+    def on_select(event):
+        selected_value = combo_var.get()
+        print(f"Selected value: {selected_value}")
+    
+    def add_custom_category():
+        new_category = simpledialog.askstring("新增收入項目", "請輸入新的收入項目:")
+        if new_category:
+            combo['values'] = list(combo['values']) + [new_category]
+            combo.set(new_category)
+            print(f"新增的收入項目: {new_category}")
+
+    add_custom_button = Tk.Button(income, text="自訂", command=add_custom_category, font=("Arial", 12))
+    add_custom_button.place(x=1050, y=45)
+
+    #以下為收入金額輸入
+    income_num = Tk.Label(income, text="請輸入收入金額", font=("Arial", 14))
+    income_num.place(x=650, y=80)
+    income_money_entry = Tk.Entry(income,width=22)
+    income_money_entry.place(x=850, y=80)
+    
+    # 創建新增紀錄的按鈕
+    btn_add_record = Tk.Button(income, text="新增紀錄", command=add_record, font=("Arial", 12))
+    btn_add_record.place(x=1100, y=200)
+
+    # 創建刪除所選項目的按鈕
+    btn_delete_record = Tk.Button(income, text="刪除選定項目", command=delete_selected, font=("Arial", 12))
+    btn_delete_record.place(x=1100, y=250)
+
+    #本月金額計算
+    目前_累計金額 = Tk.Label(income, text="目前收入總金額", font=("Arial", 18))
+    目前_累計金額 .place(x=1100, y=500)
+    目前_累計金額_顯示 = Tk.Label(income,font=("Arial", 18))
+    目前_累計金額_顯示.place(x=1150, y=550)
+
+    
+
+
+
 
 def open_goal():  # 開啟財務目標介面
     goal = Tk.Toplevel(root)
