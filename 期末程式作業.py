@@ -1,6 +1,6 @@
 
 from tkinter import Tk
-from tkinter import messagebox,Button, Frame
+from tkinter import messagebox,Button, Frame,Listbox, Scrollbar
 import tkinter as Tk
 from PIL import Image, ImageTk
 from tkinter import ttk, simpledialog
@@ -156,6 +156,32 @@ def open_cost():  # 開啟支出介面
     cost_num.place(x=650, y=80)
     cost_money_entry = Tk.Entry(cost,width=22)
     cost_money_entry.place(x=850, y=80)
+
+    record_listbox = Listbox(cost, width=40, height=10)
+    record_listbox.place(x=650, y=150)
+
+    def add_record():
+        # 在這裡使用選擇的日期
+        global selected_date
+        date_str = str(selected_date)
+        category = combo_var.get()
+        amount = cost_money_entry.get()
+        record = f"日期: {date_str}, 項目: {category}, 金額: {amount}"
+        record_listbox.insert(Tk.END, record)
+
+    def delete_record():
+        selected_index = record_listbox.curselection()
+        if selected_index:
+            record_listbox.delete(selected_index)
+
+    # 新增按鈕用來新增紀錄
+    add_record_button = Tk.Button(cost, text="新增紀錄", command=add_record, font=("Arial", 14))
+    add_record_button.place(x=650, y=300)
+
+    # 新增按鈕用來刪除紀錄
+    delete_record_button = Tk.Button(cost, text="刪除選定紀錄", command=delete_record, font=("Arial", 14))
+    delete_record_button.place(x=800, y=300)
+
 
 def open_income():  # 開啟收入介面
     income = Tk.Toplevel(root)
