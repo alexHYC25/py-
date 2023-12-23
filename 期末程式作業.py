@@ -12,7 +12,6 @@ def toggle_fullscreen(event=None): # 切換全螢幕模式
     root.attributes('-fullscreen', state)
     root.geometry('{0}x{1}+0+0'.format(root.winfo_screenwidth(), root.winfo_screenheight()))
 
-
 def check_login():# 檢查登入資料
     username = entry_username.get()
     password = entry_password.get()
@@ -182,7 +181,6 @@ def open_cost():  # 開啟支出介面
     delete_record_button = Tk.Button(cost, text="刪除選定紀錄", command=delete_record, font=("Arial", 14))
     delete_record_button.place(x=795, y=330)
 
-
 def open_income():  # 開啟收入介面
     income = Tk.Toplevel(root)
     income.title("收入")
@@ -194,17 +192,66 @@ def open_goal():  # 開啟財務目標介面
     #goal.attributes('-fullscreen', True)   # 全螢幕
     label_goal = Tk.Label(goal, text="財務目標", font=("Arial", 40))
     label_goal.place(x=100, y=150)
-    
+    #設定支出上限按鈕
+    button_cost_limit = Tk.Button(goal, text="設定支出上限", command=open_cost_limit, font=("Arial", 16), bg="white", fg="black", padx=10, pady=5, relief="raised", bd=2,borderwidth=10)
+    button_cost_limit.pack()
+    button_cost_limit.place(x=100, y=300,width=200, height=80)
+    #設定儲蓄目標按鈕
+    button_income_goal = Tk.Button(goal , text="設定儲蓄目標", command=open_income_goal, font=("Arial", 16), bg="white", fg="black", padx=10, pady=5, relief="raised", bd=2,borderwidth=10)
+    button_income_goal.pack()
+    button_income_goal.place(x=100, y=400,width=200, height=80)
+    # 創建一個 Label 用來顯示目前支出
+    selected_cost_limit = Tk.Label(goal, text="111", font=("Arial", 16))
+    selected_cost_limit.place(x=500, y=325)
+    # 創建一個 Label 用來顯示目前收入
+    selected_income_goal = Tk.Label(goal, text="111", font=("Arial", 16))
+    selected_income_goal.place(x=500, y=425)
+    # 創建一個 Label 用來顯示設定的支出上限
+    selected_cost_limit_label = Tk.Label(goal, text="/111", font=("Arial", 16))
+    selected_cost_limit_label.place(x=700, y=325)
+    # 創建一個 Label 用來顯示設定的儲蓄目標
+    selected_income_goal_label = Tk.Label(goal, text="/111", font=("Arial", 16))
+    selected_income_goal_label.place(x=700, y=425)
+
+def open_cost_limit():
+    def set_limit_cost():
+        # 取得輸入的數值
+        cost_value = cost_money_entry.get()
+        # 可在這裡處理數值的儲存或其他操作
+        cost_limit.destroy()  # 關閉設定支出上限視窗
+        selected_cost_limit.config(text=cost_limit)
+
+    cost_limit = Tk.Toplevel(root)
+    cost_limit.title("設定支出上限")
+    cost_money_entry = Tk.Entry(cost_limit, width=22)
+    cost_money_entry.place(x=20, y=50)
+    button_cost_limit = Tk.Button(cost_limit, text="設定", command=set_limit_cost, font=("Arial", 12), bg="white", fg="black", padx=10, pady=5, relief="raised", bd=2)
+    button_cost_limit.pack()
+    button_cost_limit.place(x=50, y=80, width=100, height=50)
+
+def open_income_goal():
+    def set_goal_income():
+        # 取得輸入的數值
+        income_value = income_money_entry.get()
+        # 可在這裡處理數值的儲存或其他操作
+        income_goal.destroy()  # 關閉設定儲蓄目標視窗
+        selected_income_goal.config(text=income_value)
+
+    income_goal = Tk.Toplevel(root)
+    income_goal.title("設定儲蓄目標")
+    income_money_entry = Tk.Entry(income_goal, width=22)
+    income_money_entry.place(x=20, y=50)
+    button_income_goal = Tk.Button(income_goal, text="設定", command=set_goal_income, font=("Arial", 12), bg="white", fg="black", padx=10, pady=5, relief="raised", bd=2)
+    button_income_goal.pack()
+    button_income_goal.place(x=50, y=80, width=100, height=50)
 
 def open_analysis():  # 開啟財務圖表分析介面
     analysis = Tk.Toplevel(root)
     analysis.title("財務圖表分析")
 
-
 def open_suggestion():  # 開啟財務分析與建議介面
     suggestion = Tk.Toplevel(root)
     suggestion.title("財務分析與建議")
-
 
 # 建立主視窗
 root = Tk.Tk()
@@ -238,7 +285,7 @@ entry_password.pack(pady=10)
 login_button = Tk.Button(root, text="登入", command=check_login, font=("Arial", 18), bg="#4CAF50", fg="white", padx=15, pady=8)
 login_button.pack(pady=30)
 
-
 # 啟動主迴圈
 root.mainloop()
+
 
