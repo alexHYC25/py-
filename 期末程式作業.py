@@ -176,11 +176,11 @@ def open_cost():  # 開啟支出介面
 
     # 新增按鈕用來新增紀錄
     add_record_button = Tk.Button(cost, text="新增紀錄", command=add_record, font=("Arial", 14))
-    add_record_button.place(x=650, y=300)
+    add_record_button.place(x=650, y=330)
 
     # 新增按鈕用來刪除紀錄
     delete_record_button = Tk.Button(cost, text="刪除選定紀錄", command=delete_record, font=("Arial", 14))
-    delete_record_button.place(x=800, y=300)
+    delete_record_button.place(x=795, y=330)
 
 
 def open_income():  # 開啟收入介面
@@ -191,7 +191,9 @@ def open_income():  # 開啟收入介面
 def open_goal():  # 開啟財務目標介面
     goal = Tk.Toplevel(root)
     goal.title("財務目標")
-
+    #goal.attributes('-fullscreen', True)   # 全螢幕
+    label_goal = Tk.Label(goal, text="財務目標", font=("Arial", 40))
+    label_goal.place(x=100, y=150)
 
 def open_analysis():  # 開啟財務圖表分析介面
     analysis = Tk.Toplevel(root)
