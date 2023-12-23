@@ -122,10 +122,25 @@ def open_cost():  # 開啟支出介面
     # 創建一個 Label 用來顯示選擇的日期
     selected_date_label = Tk.Label(cost, text="", font=("Arial", 16))
     selected_date_label.place(x=270, y=350)
+    
+    record_listbox = Listbox(cost, width=50, height=10)
+    record_listbox.place(x=650, y=150)
     # 創建一個函式用來取得選擇的日期
     def get_selected_date():
         selected_date = cal.get_date()
         selected_date_label.config(text=f"選擇的日期: {selected_date}")
+
+    def add_record():
+        date_str = selected_date_label.cget("text")
+        category = combo_var.get()
+        amount = cost_money_entry.get()
+        record = f"{date_str}, 項目: {category}, 金額: {amount}"
+        record_listbox.insert(Tk.END, record)
+    
+    def delete_selected():
+        selected_index = record_listbox.curselection()
+        if selected_index:
+            record_listbox.delete(selected_index)
     # 創建一個按鈕用來取得選擇的日期
     btn_get_date = Tk.Button(cost, text="獲取日期", command=get_selected_date, font=("Arial", 14))
     btn_get_date.place(x=330, y=300)
@@ -157,36 +172,86 @@ def open_cost():  # 開啟支出介面
     cost_money_entry = Tk.Entry(cost,width=22)
     cost_money_entry.place(x=850, y=80)
 
-    record_listbox = Listbox(cost, width=40, height=10)
-    record_listbox.place(x=650, y=150)
+    # 創建新增紀錄的按鈕
+    btn_add_record = Tk.Button(cost, text="新增紀錄", command=add_record, font=("Arial", 12))
+    btn_add_record.place(x=1100, y=200)
 
-    def add_record():
-        # 在這裡使用選擇的日期
-        global selected_date
-        date_str = str(selected_date)
-        category = combo_var.get()
-        amount = cost_money_entry.get()
-        record = f"日期: {date_str}, 項目: {category}, 金額: {amount}"
-        record_listbox.insert(Tk.END, record)
+    # 創建刪除所選項目的按鈕
+    btn_delete_record = Tk.Button(cost, text="刪除選定項目", command=delete_selected, font=("Arial", 12))
+    btn_delete_record.place(x=1100, y=250)
 
-    def delete_record():
-        selected_index = record_listbox.curselection()
-        if selected_index:
-            record_listbox.delete(selected_index)
-
-    # 新增按鈕用來新增紀錄
-    add_record_button = Tk.Button(cost, text="新增紀錄", command=add_record, font=("Arial", 14))
-    add_record_button.place(x=650, y=300)
-
-    # 新增按鈕用來刪除紀錄
-    delete_record_button = Tk.Button(cost, text="刪除選定紀錄", command=delete_record, font=("Arial", 14))
-    delete_record_button.place(x=800, y=300)
 
 
 def open_income():  # 開啟收入介面
     income = Tk.Toplevel(root)
     income.title("收入")
+    #income.attributes('-fullscreen', True)   # 全螢幕
+    label_income = Tk.Label(income, text="請選擇收入日期", font=("Arial", 16))
+    label_income.place(x=300, y=50)
+    # 創建日期選擇器
+    cal = Calendar(income, selectmode="day", year=date.today().year, month=date.today().month, day=date.today().day)
+    cal.place(x=270, y=100)
+    # 創建一個 Label 用來顯示選擇的日期
+    selected_date_label = Tk.Label(income, text="", font=("Arial", 16))
+    selected_date_label.place(x=270, y=350)
     
+    record_listbox = Listbox(income, width=50, height=10)
+    record_listbox.place(x=650, y=150)
+    # 創建一個函式用來取得選擇的日期
+    def get_selected_date():
+        selected_date = cal.get_date()
+        selected_date_label.config(text=f"選擇的日期: {selected_date}")
+
+    def add_record():
+        date_str = selected_date_label.cget("text")
+        category = combo_var.get()
+        amount = cost_money_entry.get()
+        record = f"{date_str}, 項目: {category}, 金額: {amount}"
+        record_listbox.insert(Tk.END, record)
+    
+    def delete_selected():
+        selected_index = record_listbox.curselection()
+        if selected_index:
+            record_listbox.delete(selected_index)
+    # 創建一個按鈕用來取得選擇的日期
+    btn_get_date = Tk.Button(income, text="獲取日期", command=get_selected_date, font=("Arial", 14))
+    btn_get_date.place(x=330, y=300)
+    
+    #以下為收入項目選擇
+    income_variety = Tk.Label(income, text="請選擇收入項目", font=("Arial", 14))
+    income_variety.place(x=650, y=50)
+    combo_var = Tk.StringVar()# 創建一個變數來存儲選擇的值
+    combo = ttk.Combobox(income, textvariable=combo_var, values=["薪水", "兼職", "投資", "獎金", "其他" ])
+    combo.place(x=850, y=50)
+    
+    def on_select(event):
+        selected_value = combo_var.get()
+        print(f"Selected value: {selected_value}")
+
+    def add_custom_category():
+        new_category = simpledialog.askstring("新增收入項目", "請輸入新的收入項目:")
+        if new_category:
+            combo['values'] = list(combo['values']) + [new_category]
+            combo.set(new_category)
+            print(f"新增的收入項目: {new_category}")
+
+    add_custom_button = Tk.Button(income, text="自訂", command=add_custom_category, font=("Arial", 12))
+    add_custom_button.place(x=1050, y=45)
+    
+    #以下為收入金額輸入
+    income_num = Tk.Label(income, text="請輸入收入金額", font=("Arial", 14))
+    income_num.place(x=650, y=80)
+    cost_money_entry = Tk.Entry(income, width=22)
+    cost_money_entry.place(x=850, y=80)
+
+    # 創建新增紀錄的按鈕
+    btn_add_record = Tk.Button(income, text="新增紀錄", command=add_record, font=("Arial", 12))
+    btn_add_record.place(x=1100, y=200)
+
+    # 創建刪除所選項目的按鈕
+    btn_delete_record = Tk.Button(income, text="刪除選定項目", command=delete_selected, font=("Arial", 12))
+    btn_delete_record.place(x=1100, y=250)
+
 
 def open_goal():  # 開啟財務目標介面
     goal = Tk.Toplevel(root)
