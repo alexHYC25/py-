@@ -134,7 +134,7 @@ def open_cost():  # 開啟支出介面
     cost_variety = Tk.Label(cost, text="請選擇支出項目", font=("Arial", 14))
     cost_variety.place(x=650, y=50)
     combo_var = Tk.StringVar()# 創建一個變數來存儲選擇的值
-    combo = ttk.Combobox(cost, textvariable=combo_var, values=["飲食", "日常用品", "交通"])
+    combo = ttk.Combobox(cost, textvariable=combo_var, values=["飲食", "日常用品", "交通", "水電瓦斯","電話網路","居家","服飾","汽車","娛樂","美容美髮" ])
     combo.place(x=850, y=50)
     
     def on_select(event):
