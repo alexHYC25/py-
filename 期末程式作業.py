@@ -255,9 +255,8 @@ def open_income():  # 開啟收入介面
     record_listbox = Listbox(income, width=50, height=10)
     record_listbox.place(x=650, y=150)
 
-
     def on_income_close():
-        # 在這裡加入更新首頁的程式碼
+        open_index()
         label_cost_num = Tk.Label(frame_labels_income, text=total_amount)
         label_cost_num.pack(side=Tk.TOP)
         print("收入介面已關閉，更新首頁")
