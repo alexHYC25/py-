@@ -12,6 +12,7 @@ total_cost=0
 # 設置中文字體
 plt.rcParams['font.sans-serif'] = ['Arial Unicode MS']  # 將字體設置為支援中文的字型，例如 'Arial Unicode MS'
 plt.rcParams['axes.unicode_minus'] = False  # 解決負數無法正常顯示的問題
+
 def toggle_fullscreen(event=None): # 切換全螢幕模式
     state = not root.attributes('-fullscreen')
     root.attributes('-fullscreen', state)
