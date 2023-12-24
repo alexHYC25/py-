@@ -7,6 +7,7 @@ from datetime import date, timedelta
 from tkcalendar import Calendar
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import random
 total_amount=0
 total_cost=0
 global_photo = None
@@ -133,6 +134,7 @@ def open_index():  # 開啟首頁
 
 
 
+
 ###-----支出頁面-----###
 def open_cost():  # 開啟支出介面
     global combo
@@ -181,7 +183,7 @@ def open_cost():  # 開啟支出介面
         except ValueError:
             # 處理金額不是有效數字的情況
             print("請輸入有效的金額。")
-   
+    
     def delete_selected():
         global total_amount
 
@@ -224,7 +226,7 @@ def open_cost():  # 開啟支出介面
         # 設置圓餅圖資料
         labels = items  # 各部分的標籤
         sizes = amounts  # 各部分的大小（百分比）
-        colors = ['gold', 'yellowgreen', 'lightcoral', 'lightskyblue']  # 顏色
+        colors = ['#' + ''.join(random.choices('0123456789ABCDEF', k=6)) for _ in range(len(labels))]  # 顏色
         explode = tuple(0.1 if i == max(amounts) else 0 for i in amounts)
         fig, ax = plt.subplots(figsize=(6, 6))
         ax.pie(sizes, explode=explode, labels=labels, colors=colors, autopct='%1.1f%%', shadow=True, startangle=140)
@@ -407,7 +409,7 @@ def open_income():  # 開啟收入介面
         # 設置圓餅圖資料
         labels = items  # 各部分的標籤
         sizes = amounts  # 各部分的大小（百分比）
-        colors = ['gold', 'yellowgreen', 'lightcoral', 'lightskyblue']  # 顏色
+        colors = ['#' + ''.join(random.choices('0123456789ABCDEF', k=6)) for _ in range(len(labels))]  # 顏色
         explode = tuple(0.1 if i == max(amounts) else 0 for i in amounts)
         fig, ax = plt.subplots(figsize=(6, 6))
         ax.pie(sizes, explode=explode, labels=labels, colors=colors, autopct='%1.1f%%', shadow=True, startangle=140)
@@ -538,30 +540,64 @@ root.attributes('-fullscreen', True)   # 全螢幕
 root.bind('<Escape>', toggle_fullscreen) # 按Esc切換全螢幕模式
 
 # 設定窗口背景圖片
-bg_image = Image.open("使用者驗證介面.jpg")  # 替換為你的背景圖片檔案名稱或路徑
+bg_image = Image.open("使用者驗證介面2.jpg")  # 替換為你的背景圖片檔案名稱或路徑
 bg_photo = ImageTk.PhotoImage(bg_image)
 bg_label = Tk.Label(root, image=bg_photo)
 bg_label.place(relwidth=1, relheight=1)
 
 # 使用者名稱標籤和輸入框
-title = Tk.Label(root, text="個人財務管理系統", font=("Arial", 44, "bold"), fg="white", bg="#000000")
+title = Tk.Label(root, text="個人財務管理系統", font=("Arial", 44, "bold"), fg="black",bg="white")
 title.pack(pady=20)
 
 # 使用者名稱標籤和輸入框
-label_username = Tk.Label(root, text="使用者名稱", font=("Arial", 16), fg="blue")
+label_username = Tk.Label(root, text="使用者名稱", font=("Arial", 16), fg="black",bg="white")
 label_username.pack(pady=10)
 entry_username = Tk.Entry(root, font=("Arial", 14))
 entry_username.pack(pady=10)
 
 # 密碼標籤和輸入框
-label_password = Tk.Label(root, text="密碼", font=("Arial", 16), fg="blue")
+label_password = Tk.Label(root, text="密碼", font=("Arial", 16), fg="black",bg="white")
 label_password.pack(pady=10)
 entry_password = Tk.Entry(root, show="*", font=("Arial", 14))  # 以星號顯示密碼
 entry_password.pack(pady=10)
 
 # 登入按鈕
 login_button = Tk.Button(root, text="登入", command=check_login, font=("Arial", 18), bg="#4CAF50", fg="white", padx=15, pady=8)
-login_button.pack(pady=30)
+login_button.pack(pady=10)
+
+gif_path = "shuba-duck.gif"
+gif_image = Image.open(gif_path)
+
+# 定义所需的宽度和高度
+new_width = 860  # 请根据您需要的宽度设置具体数值
+new_height = 400  # 请根据您需要的高度设置具体数值
+
+# 分解GIF图像为帧并调整尺寸
+frames = []
+for frame in range(0, gif_image.n_frames):
+    gif_image.seek(frame)
+    frame_image = gif_image.copy().convert("RGBA")
+
+    # 调整每一帧的大小
+    resized_frame = frame_image.resize((new_width, new_height), Image.BICUBIC)
+
+    frames.append(resized_frame)
+
+# 将帧转换为Tkinter可用的格式
+tk_frames = [ImageTk.PhotoImage(frame) for frame in frames]
+
+# 创建一个标签部件来显示动画GIF
+gif_label = Tk.Label(root)
+gif_label.pack()
+
+# 定义显示动画的函数
+def animate(frame):
+    gif_label.configure(image=tk_frames[frame])
+    root.after(100, animate, (frame + 1) % len(tk_frames))
+
+# 开始动画
+animate(0)
+
 def refresh_homepage():
     # 在這裡更新首頁的內容
     label_cost_num = Tk.Label(frame_labels_income, text=total_amount)
