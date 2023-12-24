@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 total_amount=0
 total_cost=0
+global_photo = None
 # 設置中文字體
 plt.rcParams['font.sans-serif'] = ['Arial Unicode MS']  # 將字體設置為支援中文的字型，例如 'Arial Unicode MS'
 plt.rcParams['axes.unicode_minus'] = False  # 解決負數無法正常顯示的問題
@@ -31,6 +32,7 @@ def check_login():# 檢查登入資料
 
 ##以下為首頁程式選擇介面
 def open_index():  # 開啟首頁
+    global global_photo
     index = Tk.Toplevel(root)
     index.title("首頁")
     index.attributes('-fullscreen', True)   # 全螢幕
@@ -115,7 +117,21 @@ def open_index():  # 開啟首頁
     # 創建全部期間收支金額顯示 Label
     label_cost_get = Tk.Label(frame_labels_all, text="此處放全部期間收支金額")
     label_cost_get.pack(side=Tk.TOP)
+
+
+    image_path = "歡迎使用個人記帳管理系統.jpg"  # 替換為您的圖片檔案路徑
+    original_image = Image.open(image_path)
+    resized_image = original_image.resize((300, 300))
+    global_photo = ImageTk.PhotoImage(resized_image)
     
+
+    # 在視窗中顯示圖片
+    image_label = Tk.Label(index, image=global_photo)
+    image_label.image = global_photo  # 保留對 PhotoImage 的引用，防止被垃圾回收
+    image_label.place(x=500, y=150)  # 調整 x 和 y 的值以控制圖片的位置
+
+
+
 
 ###-----支出頁面-----###
 def open_cost():  # 開啟支出介面
