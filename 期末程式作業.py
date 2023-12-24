@@ -569,7 +569,5 @@ def refresh_homepage():
 root.after(5000, refresh_homepage)
 
 
-
-
 # 啟動主迴圈
 root.mainloop()
