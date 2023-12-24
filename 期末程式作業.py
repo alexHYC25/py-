@@ -8,6 +8,8 @@ from tkcalendar import Calendar
 total_amount=0
 total_cost=0
 
+
+
 def toggle_fullscreen(event=None): # 切換全螢幕模式
     state = not root.attributes('-fullscreen')
     root.attributes('-fullscreen', state)
@@ -110,7 +112,7 @@ def open_index():  # 開啟首頁
     # 創建全部期間收支金額顯示 Label
     label_cost_get = Tk.Label(frame_labels_all, text="此處放全部期間收支金額")
     label_cost_get.pack(side=Tk.TOP)
-
+    
 
 ###-----支出頁面-----###
 def open_cost():  # 開啟支出介面
@@ -442,6 +444,8 @@ def open_income_goal():
     button_income_goal.pack()
     button_income_goal.place(x=50, y=80, width=100, height=50)
 
+
+
 def open_analysis():  # 開啟財務圖表分析介面
     analysis = Tk.Toplevel(root)
     analysis.title("財務圖表分析")
@@ -463,17 +467,17 @@ bg_label = Tk.Label(root, image=bg_photo)
 bg_label.place(relwidth=1, relheight=1)
 
 # 使用者名稱標籤和輸入框
-title = Tk.Label(root, text="個人財務管理系統", font=("Arial", 44), fg="white", bg="#000000")
+title = Tk.Label(root, text="個人財務管理系統", font=("Arial", 44, "bold"), fg="white", bg="#000000")
 title.pack(pady=20)
 
 # 使用者名稱標籤和輸入框
-label_username = Tk.Label(root, text="使用者名稱:", font=("Arial", 16), fg="white", bg="#000000")
+label_username = Tk.Label(root, text="使用者名稱", font=("Arial", 16), fg="blue")
 label_username.pack(pady=10)
 entry_username = Tk.Entry(root, font=("Arial", 14))
 entry_username.pack(pady=10)
 
 # 密碼標籤和輸入框
-label_password = Tk.Label(root, text="密碼:", font=("Arial", 16), fg="white", bg="#000000")
+label_password = Tk.Label(root, text="密碼", font=("Arial", 16), fg="blue")
 label_password.pack(pady=10)
 entry_password = Tk.Entry(root, show="*", font=("Arial", 14))  # 以星號顯示密碼
 entry_password.pack(pady=10)
@@ -486,6 +490,10 @@ def refresh_homepage():
     label_cost_num = Tk.Label(frame_labels_income, text=total_amount)
     label_cost_num.pack(side=Tk.TOP)
 root.after(5000, refresh_homepage)
+
+
+
+
 # 啟動主迴圈
 root.mainloop()
 
