@@ -13,8 +13,6 @@ def toggle_fullscreen(event=None): # 切換全螢幕模式
     root.attributes('-fullscreen', state)
     root.geometry('{0}x{1}+0+0'.format(root.winfo_screenwidth(), root.winfo_screenheight()))
 
-
-
 def check_login():# 檢查登入資料
     username = entry_username.get()
     password = entry_password.get()
@@ -22,7 +20,7 @@ def check_login():# 檢查登入資料
     if username == "1" and password == "1":
         messagebox.showinfo("登入成功", "歡迎回來，{}".format(username))
         open_index()
-        
+
     else:
         messagebox.showerror("登入失敗", "使用者名稱或密碼錯誤")
 
@@ -355,6 +353,8 @@ def open_income():  # 開啟收入介面
     income_money_entry = Tk.Entry(income,width=22)
     income_money_entry.place(x=850, y=80)
     
+    btn_return = Tk.Button(income, text="返回", command=on_income_close, font=("Arial", 12))
+    btn_return.place(x=1100, y=400)
     # 創建新增紀錄的按鈕
     btn_add_record = Tk.Button(income, text="新增紀錄", command=add_record, font=("Arial", 12))
     btn_add_record.place(x=1100, y=200)
