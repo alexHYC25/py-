@@ -209,7 +209,6 @@ def open_cost():  # 開啟支出介面
         labels = items  # 各部分的標籤
         sizes = amounts  # 各部分的大小（百分比）
         colors = ['gold', 'yellowgreen', 'lightcoral', 'lightskyblue']  # 顏色
-        explode = tuple(0.1 if i == max(amounts) else 0 for i in amounts)  # 突出最大的部分
 
         fig, ax = plt.subplots(figsize=(6, 6))
         ax.pie(sizes, explode=explode, labels=labels, colors=colors, autopct='%1.1f%%', shadow=True, startangle=140)
@@ -393,7 +392,6 @@ def open_income():  # 開啟收入介面
         labels = items  # 各部分的標籤
         sizes = amounts  # 各部分的大小（百分比）
         colors = ['gold', 'yellowgreen', 'lightcoral', 'lightskyblue']  # 顏色
-        explode = tuple(0.1 if i == max(amounts) else 0 for i in amounts)  # 突出最大的部分
 
         fig, ax = plt.subplots(figsize=(6, 6))
         ax.pie(sizes, explode=explode, labels=labels, colors=colors, autopct='%1.1f%%', shadow=True, startangle=140)
