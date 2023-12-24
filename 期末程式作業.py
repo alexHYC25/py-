@@ -402,6 +402,13 @@ def open_goal():
     # 創建一個 Label 用來顯示設定的儲蓄目標
     selected_income_goal_label = Tk.Label(goal, text="0", font=("Arial", 16))
     selected_income_goal_label.place(x=700, y=425)
+    # 創建一個 Label 用來顯示「目標」
+    show_goal = Tk.Label(goal, text="目標", font=("Arial", 20))
+    show_goal.place(x=680, y=280)
+
+    # 創建一個 Label 用來顯示「目前」
+    show_now = Tk.Label(goal, text="目前", font=("Arial", 20))
+    show_now.place(x=470, y=280)
 
 def open_cost_limit():
     def set_limit_cost():
