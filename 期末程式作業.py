@@ -39,6 +39,11 @@ def open_index():  # 開啟首頁
     index.attributes('-fullscreen', True)   # 全螢幕
     index.bind('<Escape>', toggle_fullscreen) # 按Esc切換全螢幕模式
 
+    bg_image_index = Image.open("使用者驗證介面2.jpg")  # 替換為你的背景圖片檔案名稱或路徑
+    bg_photo_index = ImageTk.PhotoImage(bg_image_index)
+    bg_label_index = Tk.Label(index, image=bg_photo_index)
+    bg_label_index.place(relwidth=1, relheight=1)
+
     #設定日期
     current_date = date.today()  # 取得當前日期
     date_label = Tk.Label(index, text=current_date.strftime("日期: %Y-%m-%d"), font=("Arial", 40))
@@ -130,6 +135,8 @@ def open_index():  # 開啟首頁
     image_label = Tk.Label(index, image=global_photo)
     image_label.image = global_photo  # 保留對 PhotoImage 的引用，防止被垃圾回收
     image_label.place(x=500, y=150)  # 調整 x 和 y 的值以控制圖片的位置
+    
+    index.mainloop()
 
 
 
