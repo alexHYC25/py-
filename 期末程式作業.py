@@ -129,6 +129,14 @@ def open_index():  # 開啟首頁
     original_image = Image.open(image_path)
     resized_image = original_image.resize((300, 300))
     global_photo = ImageTk.PhotoImage(resized_image)
+
+
+    def refresh_homepage():
+        global total_amount
+        new_income = total_amount
+        label_cost_num = Tk.Label(frame_labels_income, text=total_amount)
+        label_cost_num.pack(side=Tk.TOP)
+        label_cost_num.config(text=f"本月收入金額：{new_income}")
     
 
     # 在視窗中顯示圖片
@@ -217,6 +225,14 @@ def open_cost():  # 開啟支出介面
             except ValueError:
                 # 處理金額不是有效數字的情況
                 print("金額格式錯誤。")
+
+    # 在返回按钮的回调函数中更新标签文本
+    def on_return_button_click():
+        # 假设 new_income 是从弹出窗口中获取到的新收入金额
+        new_income = total
+        
+        # 更新标签文本
+        label.config(text=f"本月收入金額：{new_income}")
     def open_cost_pie_chart():
         cost_pie_chart = Tk.Toplevel(root)
         cost_pie_chart.title("支出圓餅圖")
@@ -313,6 +329,8 @@ def open_income():  # 開啟收入介面
     record_listbox.place(x=650, y=150)
 
     def on_income_close():
+        global total_amount
+        income.destroy()
         label_cost_num = Tk.Label(frame_labels_income, text=total_amount)
         label_cost_num.pack(side=Tk.TOP)
         print("收入介面已關閉，更新首頁")
@@ -434,8 +452,9 @@ def open_income():  # 開啟收入介面
     income_num.place(x=650, y=80)
     income_money_entry = Tk.Entry(income,width=22)
     income_money_entry.place(x=850, y=80)
-    
-    btn_return = Tk.Button(income, text="返回", command=on_income_close, font=("Arial", 12))
+
+    # 創建返回的按鈕
+    btn_return = Tk.Button(income, text="返回", command=on_income_close ,font=("Arial", 12))
     btn_return.place(x=1100, y=400)
     # 創建新增紀錄的按鈕
     btn_add_record = Tk.Button(income, text="新增紀錄", command=add_record, font=("Arial", 12))
@@ -599,16 +618,10 @@ gif_label.pack()
 # 定义显示动画的函数
 def animate(frame):
     gif_label.configure(image=tk_frames[frame])
-    root.after(100, animate, (frame + 1) % len(tk_frames))
-
+    root.after(100, animate, (frame + 1) % len(tk_frames))  
+    
 # 开始动画
 animate(0)
-
-def refresh_homepage():
-    # 在這裡更新首頁的內容
-    label_cost_num = Tk.Label(frame_labels_income, text=total_amount)
-    label_cost_num.pack(side=Tk.TOP)
-root.after(5000, refresh_homepage)
 
 
 
