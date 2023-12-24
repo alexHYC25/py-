@@ -22,12 +22,7 @@ def check_login():# 檢查登入資料
     if username == "1" and password == "1":
         messagebox.showinfo("登入成功", "歡迎回來，{}".format(username))
         open_index()
-<<<<<<< Updated upstream
-
-=======
-        root.destroy()
         
->>>>>>> Stashed changes
     else:
         messagebox.showerror("登入失敗", "使用者名稱或密碼錯誤")
 
