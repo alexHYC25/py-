@@ -16,6 +16,7 @@ def toggle_fullscreen(event=None): # 切換全螢幕模式
 def check_login():# 檢查登入資料
     username = entry_username.get()
     password = entry_password.get()
+
     if username == "1" and password == "1":
         messagebox.showinfo("登入成功", "歡迎回來，{}".format(username))
         open_index()
@@ -255,7 +256,6 @@ def open_income():  # 開啟收入介面
     record_listbox.place(x=650, y=150)
 
     def on_income_close():
-        open_index()
         label_cost_num = Tk.Label(frame_labels_income, text=total_amount)
         label_cost_num.pack(side=Tk.TOP)
         print("收入介面已關閉，更新首頁")
