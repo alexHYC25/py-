@@ -5,9 +5,13 @@ from PIL import Image, ImageTk
 from tkinter import ttk, simpledialog
 from datetime import date, timedelta
 from tkcalendar import Calendar
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 total_amount=0
 total_cost=0
-
+# 設置中文字體
+plt.rcParams['font.sans-serif'] = ['Arial Unicode MS']  # 將字體設置為支援中文的字型，例如 'Arial Unicode MS'
+plt.rcParams['axes.unicode_minus'] = False  # 解決負數無法正常顯示的問題
 def toggle_fullscreen(event=None): # 切換全螢幕模式
     state = not root.attributes('-fullscreen')
     root.attributes('-fullscreen', state)
@@ -114,6 +118,7 @@ def open_index():  # 開啟首頁
 
 ###-----支出頁面-----###
 def open_cost():  # 開啟支出介面
+    global combo
     cost = Tk.Toplevel(root)
     cost.title("支出")
     #cost.attributes('-fullscreen', True)   # 全螢幕
@@ -135,7 +140,6 @@ def open_cost():  # 開啟支出介面
 
     def add_record():
         global total_amount
-
         date_str = selected_date_label.cget("text")
         category = combo_var.get()
         amount_str = cost_money_entry.get()
@@ -160,8 +164,7 @@ def open_cost():  # 開啟支出介面
         except ValueError:
             # 處理金額不是有效數字的情況
             print("請輸入有效的金額。")
-
-    
+   
     def delete_selected():
         global total_amount
 
@@ -189,6 +192,32 @@ def open_cost():  # 開啟支出介面
             except ValueError:
                 # 處理金額不是有效數字的情況
                 print("金額格式錯誤。")
+    def open_cost_pie_chart():
+        cost_pie_chart = Tk.Toplevel(root)
+        cost_pie_chart.title("支出圓餅圖")
+
+        # 獲取支出列表中的項目和金額
+        items = []
+        amounts = []
+        for item in record_listbox.get(0, Tk.END):
+            parts = item.split(", ")
+            items.append(parts[1].split(": ")[1])  # 項目
+            amounts.append(float(parts[2].split(": ")[1]))  # 金額
+
+        # 設置圓餅圖資料
+        labels = items  # 各部分的標籤
+        sizes = amounts  # 各部分的大小（百分比）
+        colors = ['gold', 'yellowgreen', 'lightcoral', 'lightskyblue']  # 顏色
+        explode = tuple(0.1 if i == max(amounts) else 0 for i in amounts)  # 突出最大的部分
+
+        fig, ax = plt.subplots(figsize=(6, 6))
+        ax.pie(sizes, explode=explode, labels=labels, colors=colors, autopct='%1.1f%%', shadow=True, startangle=140)
+        ax.axis('equal')
+        ax.set_title('支出圓餅圖')
+
+        canvas = FigureCanvasTkAgg(fig, master=cost_pie_chart)
+        canvas.draw()
+        canvas.get_tk_widget().pack()
         
     # 創建一個按鈕用來取得選擇的日期
     btn_get_date = Tk.Button(cost, text="獲取日期", command=get_selected_date, font=("Arial", 14))
@@ -234,6 +263,10 @@ def open_cost():  # 開啟支出介面
     目前_累計金額 .place(x=1100, y=500)
     目前_累計金額_顯示 = Tk.Label(cost,font=("Arial", 18))
     目前_累計金額_顯示.place(x=1150, y=550)
+
+    # 創建新增圓餅圖的按鈕
+    btn_add_record = Tk.Button(cost, text="新增圓餅圖", command=open_cost_pie_chart, font=("Arial", 12))
+    btn_add_record.place(x=1100, y=300)
 
     
 
@@ -343,6 +376,33 @@ def open_income():  # 開啟收入介面
             combo.set(new_category)
             print(f"新增的收入項目: {new_category}")
 
+    def open_income_pie_chart():
+        income_pie_chart = Tk.Toplevel(root)
+        income_pie_chart.title("收入圓餅圖")
+
+        # 獲取收入列表中的項目和金額
+        items = []
+        amounts = []
+        for item in record_listbox.get(0, Tk.END):
+            parts = item.split(", ")
+            items.append(parts[1].split(": ")[1])  # 項目
+            amounts.append(float(parts[2].split(": ")[1]))  # 金額
+
+        # 設置圓餅圖資料
+        labels = items  # 各部分的標籤
+        sizes = amounts  # 各部分的大小（百分比）
+        colors = ['gold', 'yellowgreen', 'lightcoral', 'lightskyblue']  # 顏色
+        explode = tuple(0.1 if i == max(amounts) else 0 for i in amounts)  # 突出最大的部分
+
+        fig, ax = plt.subplots(figsize=(6, 6))
+        ax.pie(sizes, explode=explode, labels=labels, colors=colors, autopct='%1.1f%%', shadow=True, startangle=140)
+        ax.axis('equal')
+        ax.set_title('收入圓餅圖')
+
+        canvas = FigureCanvasTkAgg(fig, master=income_pie_chart)
+        canvas.draw()
+        canvas.get_tk_widget().pack()
+
     add_custom_button = Tk.Button(income, text="自訂", command=add_custom_category, font=("Arial", 12))
     add_custom_button.place(x=1050, y=45)
 
@@ -367,6 +427,10 @@ def open_income():  # 開啟收入介面
     目前_累計金額 .place(x=1100, y=500)
     目前_累計金額_顯示 = Tk.Label(income,font=("Arial", 18))
     目前_累計金額_顯示.place(x=1150, y=550)
+
+    # 創建新增圓餅圖的按鈕
+    btn_add_record = Tk.Button(income, text="新增圓餅圖", command=open_income_pie_chart, font=("Arial", 12))
+    btn_add_record.place(x=1100, y=300)
 
 ###-----財務目標頁面-----###
 def open_goal():
@@ -481,5 +545,3 @@ def refresh_homepage():
 root.after(5000, refresh_homepage)
 # 啟動主迴圈
 root.mainloop()
-
-
