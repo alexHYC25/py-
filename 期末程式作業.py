@@ -7,6 +7,7 @@ from datetime import date, timedelta
 from tkcalendar import Calendar
 total_amount=0
 total_cost=0
+
 def toggle_fullscreen(event=None): # 切換全螢幕模式
     state = not root.attributes('-fullscreen')
     root.attributes('-fullscreen', state)
@@ -19,6 +20,7 @@ def check_login():# 檢查登入資料
     if username == "1" and password == "1":
         messagebox.showinfo("登入成功", "歡迎回來，{}".format(username))
         open_index()
+
     else:
         messagebox.showerror("登入失敗", "使用者名稱或密碼錯誤")
 
@@ -84,7 +86,7 @@ def open_index():  # 開啟首頁
     label = Tk.Label(frame_labels_income, text="本月收入金額", font=("Arial", 16))
     label.pack(side=Tk.TOP, pady=5)
     # 創建收入金額顯示 Label
-    label_cost_num = Tk.Label(frame_labels_income, text="此處放收入金額")
+    label_cost_num = Tk.Label(frame_labels_income, text=total_amount)
     label_cost_num.pack(side=Tk.TOP)
 
     #本月盈餘金額計算
@@ -108,6 +110,7 @@ def open_index():  # 開啟首頁
     # 創建全部期間收支金額顯示 Label
     label_cost_get = Tk.Label(frame_labels_all, text="此處放全部期間收支金額")
     label_cost_get.pack(side=Tk.TOP)
+
 
 ###-----支出頁面-----###
 def open_cost():  # 開啟支出介面
@@ -251,6 +254,12 @@ def open_income():  # 開啟收入介面
     
     record_listbox = Listbox(income, width=50, height=10)
     record_listbox.place(x=650, y=150)
+
+    def on_income_close():
+        label_cost_num = Tk.Label(frame_labels_income, text=total_amount)
+        label_cost_num.pack(side=Tk.TOP)
+        print("收入介面已關閉，更新首頁")
+
     # 創建一個函式用來取得選擇的日期
     def get_selected_date():
         selected_date = cal.get_date()
@@ -343,6 +352,8 @@ def open_income():  # 開啟收入介面
     income_money_entry = Tk.Entry(income,width=22)
     income_money_entry.place(x=850, y=80)
     
+    btn_return = Tk.Button(income, text="返回", command=on_income_close, font=("Arial", 12))
+    btn_return.place(x=1100, y=400)
     # 創建新增紀錄的按鈕
     btn_add_record = Tk.Button(income, text="新增紀錄", command=add_record, font=("Arial", 12))
     btn_add_record.place(x=1100, y=200)
@@ -463,7 +474,11 @@ entry_password.pack(pady=10)
 # 登入按鈕
 login_button = Tk.Button(root, text="登入", command=check_login, font=("Arial", 18), bg="#4CAF50", fg="white", padx=15, pady=8)
 login_button.pack(pady=30)
-
+def refresh_homepage():
+    # 在這裡更新首頁的內容
+    label_cost_num = Tk.Label(frame_labels_income, text=total_amount)
+    label_cost_num.pack(side=Tk.TOP)
+root.after(5000, refresh_homepage)
 # 啟動主迴圈
 root.mainloop()
 
