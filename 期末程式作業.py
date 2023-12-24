@@ -18,7 +18,6 @@ def toggle_fullscreen(event=None): # 切換全螢幕模式
 def check_login():# 檢查登入資料
     username = entry_username.get()
     password = entry_password.get()
-
     if username == "1" and password == "1":
         messagebox.showinfo("登入成功", "歡迎回來，{}".format(username))
         open_index()
