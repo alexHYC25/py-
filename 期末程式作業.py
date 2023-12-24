@@ -5,15 +5,8 @@ from PIL import Image, ImageTk
 from tkinter import ttk, simpledialog
 from datetime import date, timedelta
 from tkcalendar import Calendar
-import matplotlib.pyplot as plt
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-import random
-total_amount=0
+
 total_cost=0
-global_photo = None
-# 設置中文字體
-plt.rcParams['font.sans-serif'] = ['Arial Unicode MS']  # 將字體設置為支援中文的字型，例如 'Arial Unicode MS'
-plt.rcParams['axes.unicode_minus'] = False  # 解決負數無法正常顯示的問題
 
 def toggle_fullscreen(event=None): # 切換全螢幕模式
     state = not root.attributes('-fullscreen')
@@ -33,7 +26,6 @@ def check_login():# 檢查登入資料
 
 ##以下為首頁程式選擇介面
 def open_index():  # 開啟首頁
-    global global_photo
     index = Tk.Toplevel(root)
     index.title("首頁")
     index.attributes('-fullscreen', True)   # 全螢幕
@@ -137,7 +129,6 @@ def open_index():  # 開啟首頁
 
 ###-----支出頁面-----###
 def open_cost():  # 開啟支出介面
-    global combo
     cost = Tk.Toplevel(root)
     cost.title("支出")
     #cost.attributes('-fullscreen', True)   # 全螢幕
@@ -159,6 +150,7 @@ def open_cost():  # 開啟支出介面
 
     def add_record():
         global total_amount
+
         date_str = selected_date_label.cget("text")
         category = combo_var.get()
         amount_str = cost_money_entry.get()
@@ -281,10 +273,6 @@ def open_cost():  # 開啟支出介面
     目前_累計金額 .place(x=1100, y=500)
     目前_累計金額_顯示 = Tk.Label(cost,font=("Arial", 18))
     目前_累計金額_顯示.place(x=1150, y=550)
-
-    # 創建新增圓餅圖的按鈕
-    btn_add_record = Tk.Button(cost, text="新增圓餅圖", command=open_cost_pie_chart, font=("Arial", 12))
-    btn_add_record.place(x=1100, y=300)
 
     
 
@@ -445,13 +433,12 @@ def open_income():  # 開啟收入介面
     目前_累計金額_顯示 = Tk.Label(income,font=("Arial", 18))
     目前_累計金額_顯示.place(x=1150, y=550)
 
-    # 創建新增圓餅圖的按鈕
-    btn_add_record = Tk.Button(income, text="新增圓餅圖", command=open_income_pie_chart, font=("Arial", 12))
-    btn_add_record.place(x=1100, y=300)
+    
 
-###-----財務目標頁面-----###
-def open_goal():
-    global selected_cost_limit_label, selected_income_goal_label,selected_cost_limit,selected_income_goal
+
+
+
+def open_goal():  # 開啟財務目標介面
     goal = Tk.Toplevel(root)
     goal.title("財務目標")
     #goal.attributes('-fullscreen', True)   # 全螢幕
@@ -466,39 +453,26 @@ def open_goal():
     button_income_goal.pack()
     button_income_goal.place(x=100, y=400,width=200, height=80)
     # 創建一個 Label 用來顯示目前支出
-    selected_cost_limit = Tk.Label(goal, text="0", font=("Arial", 16))
+    selected_cost_limit = Tk.Label(goal, text="111", font=("Arial", 16))
     selected_cost_limit.place(x=500, y=325)
     # 創建一個 Label 用來顯示目前收入
-    selected_income_goal = Tk.Label(goal, text="0", font=("Arial", 16))
+    selected_income_goal = Tk.Label(goal, text="111", font=("Arial", 16))
     selected_income_goal.place(x=500, y=425)
-    # 創建一個 Label 用來顯示/
-    selected_slash1 = Tk.Label(goal, text="/", font=("Arial", 16))
-    selected_slash1.place(x=600, y=425)
-    # 創建一個 Label 用來顯示/
-    selected_slash2 = Tk.Label(goal, text="/", font=("Arial", 16))
-    selected_slash2.place(x=600, y=325)
     # 創建一個 Label 用來顯示設定的支出上限
-    selected_cost_limit_label = Tk.Label(goal, text="0", font=("Arial", 16))
+    selected_cost_limit_label = Tk.Label(goal, text="/111", font=("Arial", 16))
     selected_cost_limit_label.place(x=700, y=325)
     # 創建一個 Label 用來顯示設定的儲蓄目標
-    selected_income_goal_label = Tk.Label(goal, text="0", font=("Arial", 16))
+    selected_income_goal_label = Tk.Label(goal, text="/111", font=("Arial", 16))
     selected_income_goal_label.place(x=700, y=425)
-    # 創建一個 Label 用來顯示「目標」
-    show_goal = Tk.Label(goal, text="目標", font=("Arial", 20))
-    show_goal.place(x=680, y=280)
-
-    # 創建一個 Label 用來顯示「目前」
-    show_now = Tk.Label(goal, text="目前", font=("Arial", 20))
-    show_now.place(x=470, y=280)
 
 def open_cost_limit():
     def set_limit_cost():
-        global cost_limit_value
+        # 取得輸入的數值
         cost_value = cost_money_entry.get()
-        # 可在這裡進行其他操作或儲存值
-        cost_limit_value = cost_value  # 將值存儲到全局變數中
-        selected_cost_limit_label.config(text=cost_limit_value)  # 更新主要介面的標籤
-        cost_limit.destroy()
+        # 可在這裡處理數值的儲存或其他操作
+        cost_limit.destroy()  # 關閉設定支出上限視窗
+        selected_cost_limit.config(text=cost_limit)
+
     cost_limit = Tk.Toplevel(root)
     cost_limit.title("設定支出上限")
     cost_money_entry = Tk.Entry(cost_limit, width=22)
@@ -509,12 +483,12 @@ def open_cost_limit():
 
 def open_income_goal():
     def set_goal_income():
-        global income_goal_value
+        # 取得輸入的數值
         income_value = income_money_entry.get()
-        # 可在這裡進行其他操作或儲存值
-        income_goal_value = income_value  # 將值存儲到全局變數中
-        selected_income_goal_label.config(text=income_goal_value)  # 更新主要介面的標籤
-        income_goal.destroy()
+        # 可在這裡處理數值的儲存或其他操作
+        income_goal.destroy()  # 關閉設定儲蓄目標視窗
+        selected_income_goal.config(text=income_value)
+
     income_goal = Tk.Toplevel(root)
     income_goal.title("設定儲蓄目標")
     income_money_entry = Tk.Entry(income_goal, width=22)
@@ -522,8 +496,6 @@ def open_income_goal():
     button_income_goal = Tk.Button(income_goal, text="設定", command=set_goal_income, font=("Arial", 12), bg="white", fg="black", padx=10, pady=5, relief="raised", bd=2)
     button_income_goal.pack()
     button_income_goal.place(x=50, y=80, width=100, height=50)
-
-
 
 def open_analysis():  # 開啟財務圖表分析介面
     analysis = Tk.Toplevel(root)
@@ -605,7 +577,7 @@ def refresh_homepage():
 root.after(5000, refresh_homepage)
 
 
-
-
 # 啟動主迴圈
 root.mainloop()
+
+
