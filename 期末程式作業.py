@@ -10,7 +10,14 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import random
 total_amount=0
 total_cost=0
+label_income_num = None
 global_photo = None
+root = None
+#更新本月收入金額
+def update_income_label(new_amount):
+    global label_income_num
+    label_income_num.config(text=str(new_amount))
+
 # 設置中文字體
 plt.rcParams['font.sans-serif'] = ['Arial Unicode MS']  # 將字體設置為支援中文的字型，例如 'Arial Unicode MS'
 plt.rcParams['axes.unicode_minus'] = False  # 解決負數無法正常顯示的問題
@@ -33,6 +40,7 @@ def check_login():# 檢查登入資料
 
 ##以下為首頁程式選擇介面
 def open_index():  # 開啟首頁
+    global label_income_num
     global global_photo
     index = Tk.Toplevel(root)
     index.title("首頁")
@@ -99,8 +107,8 @@ def open_index():  # 開啟首頁
     label = Tk.Label(frame_labels_income, text="本月收入金額", font=("Arial", 16))
     label.pack(side=Tk.TOP, pady=5)
     # 創建收入金額顯示 Label
-    label_cost_num = Tk.Label(frame_labels_income, text=total_amount)
-    label_cost_num.pack(side=Tk.TOP)
+    label_income_num = Tk.Label(frame_labels_income, text=total_amount)
+    label_income_num.pack(side=Tk.TOP)
 
     #本月盈餘金額計算
     # 創建一個 Frame 作為框起來的區域
@@ -131,12 +139,6 @@ def open_index():  # 開啟首頁
     global_photo = ImageTk.PhotoImage(resized_image)
 
 
-    def refresh_homepage():
-        global total_amount
-        new_income = total_amount
-        label_cost_num = Tk.Label(frame_labels_income, text=total_amount)
-        label_cost_num.pack(side=Tk.TOP)
-        label_cost_num.config(text=f"本月收入金額：{new_income}")
     
 
     # 在視窗中顯示圖片
@@ -229,7 +231,7 @@ def open_cost():  # 開啟支出介面
     # 在返回按钮的回调函数中更新标签文本
     def on_return_button_click():
         # 假设 new_income 是从弹出窗口中获取到的新收入金额
-        new_income = total
+        new_income = total_amount
         
         # 更新标签文本
         label.config(text=f"本月收入金額：{new_income}")
@@ -330,9 +332,13 @@ def open_income():  # 開啟收入介面
 
     def on_income_close():
         global total_amount
+        global label_income_num
+        global root
+        update_income_label(total_amount)
         income.destroy()
-        label_cost_num = Tk.Label(frame_labels_income, text=total_amount)
-        label_cost_num.pack(side=Tk.TOP)
+        label_income_num.update_idletasks()
+        root.update_idletasks()
+        root.update()
         print("收入介面已關閉，更新首頁")
 
     # 創建一個函式用來取得選擇的日期
@@ -473,7 +479,7 @@ def open_income():  # 開啟收入介面
     # 創建新增圓餅圖的按鈕
     btn_add_record = Tk.Button(income, text="新增圓餅圖", command=open_income_pie_chart, font=("Arial", 12))
     btn_add_record.place(x=1100, y=300)
-
+    income.protocol("WM_DELETE_WINDOW", on_income_close)
 ###-----財務目標頁面-----###
 def open_goal():
     global selected_cost_limit_label, selected_income_goal_label,selected_cost_limit,selected_income_goal
