@@ -630,8 +630,6 @@ def animate(frame):
 animate(0)
 
 
-
-
 # 啟動主迴圈
 root.mainloop()
 
