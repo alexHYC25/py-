@@ -63,7 +63,7 @@ def open_index():  # 開啟首頁
     index.attributes('-fullscreen', True)   # 全螢幕
     index.bind('<Escape>', toggle_fullscreen) # 按Esc切換全螢幕模式
 
-    bg_image_index = Image.open("使用者驗證介面2.jpg")  # 替換為你的背景圖片檔案名稱或路徑
+    bg_image_index = Image.open("首頁.jpg")  # 替換為你的背景圖片檔案名稱或路徑
     bg_photo_index = ImageTk.PhotoImage(bg_image_index)
     bg_label_index = Tk.Label(index, image=bg_photo_index)
     bg_label_index.place(relwidth=1, relheight=1)
@@ -86,7 +86,7 @@ def open_index():  # 開啟首頁
 
     # 創建一個 Frame 作為表格容器
     button_frame = Frame(index)
-    button_frame.place(x=1000,y=30)
+    button_frame.place(x=5,y=50)
 
     #設定財務目標按鈕
     button_goal = Tk.Button(button_frame , text="財務目標", command=open_goal, font=("Arial", 16), bg="white", fg="black", padx=10, pady=5, relief="raised", bd=2,borderwidth=10)
@@ -123,13 +123,12 @@ def open_index():  # 開啟首頁
     label = Tk.Label(frame_labels_income, text="本月收入金額", font=("Arial", 16))
     label.pack(side=Tk.TOP, pady=5)
     # 創建收入金額顯示 Label
-    label_income_num = Tk.Label(frame_labels_income, text=total_amount)
-    label_income_num.pack(side=Tk.TOP)
-
+    label_cost_num = Tk.Label(frame_labels_income, text=total_amount)
+    label_cost_num.pack(side=Tk.TOP)
     #本月盈餘金額計算
     # 創建一個 Frame 作為框起來的區域
     frame_labels_surplus = Tk.Frame(index, bd=2, relief=Tk.GROOVE)
-    frame_labels_surplus.place(x=1050, y=400, width=150, height=100)
+    frame_labels_surplus.place(x=25, y=400, width=150, height=100)
     # 創建本月盈餘金額Label
     label = Tk.Label(frame_labels_surplus, text="本月盈餘金額", font=("Arial", 16))
     label.pack(side=Tk.TOP, pady=5)
@@ -140,7 +139,7 @@ def open_index():  # 開啟首頁
     #全部期間收支金額計算
     # 創建一個 Frame 作為框起來的區域
     frame_labels_all = Tk.Frame(index, bd=2, relief=Tk.GROOVE)
-    frame_labels_all.place(x=1050, y=500, width=150, height=100)
+    frame_labels_all.place(x=25, y=500, width=150, height=100)
     # 創建全部期間收支金額Label
     label = Tk.Label(frame_labels_all, text="全部期間收支金額", font=("Arial", 12))
     label.pack(side=Tk.TOP, pady=5)
@@ -148,12 +147,10 @@ def open_index():  # 開啟首頁
     label_cost_get = Tk.Label(frame_labels_all, text="此處放全部期間收支金額")
     label_cost_get.pack(side=Tk.TOP)
 
-
     image_path = "歡迎使用個人記帳管理系統.jpg"  # 替換為您的圖片檔案路徑
     original_image = Image.open(image_path)
     resized_image = original_image.resize((300, 300))
     global_photo = ImageTk.PhotoImage(resized_image)
-
 
     
 
@@ -163,6 +160,7 @@ def open_index():  # 開啟首頁
     image_label.place(x=500, y=150)  # 調整 x 和 y 的值以控制圖片的位置
     
     index.mainloop()
+
 
 
 
