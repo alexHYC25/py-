@@ -19,6 +19,7 @@ def run_once():
     global run_once_has_run
     global label_cost_get
     global label_cost_and_income
+
     if not run_once_has_run:
         print("This will only run once")
         run_once_has_run = True
@@ -571,6 +572,7 @@ def open_goal():
     global selected_cost_limit_label, selected_income_goal_label,selected_cost_limit,selected_income_goal
     global total_cost
     global cost_limit_value
+    global label_相差_num
     goal = Tk.Toplevel(root)
     goal.title("財務目標")
     #goal.attributes('-fullscreen', True)   # 全螢幕
@@ -617,16 +619,15 @@ def open_goal():
 
     label_相差 = Tk.Label(goal, text="離目標相差：", font=("Arial", 20))
     label_相差.place(x=800, y=325)
-    a=cost_limit_value-total_cost
     label_相差_num = Tk.Label(goal, text=0,font=("Arial", 20))
     label_相差_num.place(x=1000, y=325)
+    label_相差_num.config(text=(int(cost_limit_value)-total_cost))
 
 
 
     label_相差_income = Tk.Label(goal, text="離目標相差：", font=("Arial", 20))
     label_相差_income.place(x=800, y=425)
-    b=income_goal_value-total_amount
-    label_相差_num_income = Tk.Label(goal, text=0,font=("Arial", 20))
+    label_相差_num_income = Tk.Label(goal, text=(cost_limit_value-total_cost),font=("Arial", 20))
     label_相差_num_income.place(x=1000, y=425)
 
 
@@ -638,18 +639,21 @@ def open_goal():
     goal.mainloop()
     
 def open_cost_limit():
+    global label_相差_num
     def set_limit_cost():
         global cost_limit_value
         cost_value = cost_money_entry.get() 
         # 可在這裡進行其他操作或儲存值
         cost_limit_value = cost_value  # 將值存儲到全局變數中
-        selected_cost_limit_label.config(text=cost_limit_value)  # 更新主要介面的標籤
+        selected_cost_limit_label.config(text=cost_limit_value)# 更新主要介面的標籤
+        label_相差_num.config(text=(int(cost_limit_value)-total_cost))
         cost_limit.destroy()
     cost_limit = Tk.Toplevel(root)
     cost_limit.title("設定支出上限")
     cost_money_entry = Tk.Entry(cost_limit, width=22)
     cost_money_entry.place(x=20, y=50)
     selected_cost_limit_label.config(text=cost_limit_value)
+    label_相差_num.config(text=(int(cost_limit_value)-total_cost))
     button_cost_limit = Tk.Button(cost_limit, text="設定", command=set_limit_cost, font=("Arial", 12), bg="white", fg="black", padx=10, pady=5, relief="raised", bd=2)
     button_cost_limit.pack()
     button_cost_limit.place(x=50, y=80, width=100, height=50)
