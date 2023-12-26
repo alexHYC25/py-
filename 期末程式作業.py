@@ -118,23 +118,18 @@ def open_index():  # 開啟首頁
     button_income.pack()
     button_income.place(x=700, y=500,width=100, height=50)
 
-    # 創建一個 Frame 作為表格容器
-    button_frame = Frame(index)
-    button_frame.place(x=5,y=50)
 
     #設定財務目標按鈕
-    button_goal = Tk.Button(button_frame , text="財務目標", command=open_goal, font=("Arial", 16), bg="white", fg="black", padx=10, pady=5, relief="raised", bd=2,borderwidth=10)
-    button_goal.grid(row=0, column=0, sticky="ew")
+    button_goal = Tk.Button(index , text="財務目標", command=open_goal, font=("Arial", 16), bg="white", fg="black", padx=10, pady=5, relief="raised", bd=2)
+    button_goal.place(x=15, y=100,width=180, height=80)
 
     #設定財務圖表分析按鈕
-    button_analysis = Tk.Button(button_frame , text="財務圖表分析", command=open_analysis, font=("Arial", 16), bg="white", fg="black", padx=10, pady=5, relief="raised", bd=2,borderwidth=10)
-    button_analysis.grid(row=1, column=0, sticky="ew")
+    button_analysis = Tk.Button(index , text="財務圖表分析", command=open_analysis, font=("Arial", 16), bg="white", fg="black", padx=10, pady=5, relief="raised", bd=2)
+    button_analysis.place(x=15, y=180,width=180, height=80)
 
     #財務分析與建議按鈕
-    button_suggestion = Tk.Button(button_frame , text="財務分析與建議", command=open_suggestion, font=("Arial", 16), bg="white", fg="black", padx=10, pady=5, relief="raised", bd=2,borderwidth=10)
-    button_suggestion.grid(row=2, column=0, sticky="ew")
-
-    button_frame.grid_columnconfigure(0, weight=1, uniform="equal") # 設定欄寬
+    button_suggestion = Tk.Button(index , text="財務分析與建議", command=open_suggestion, font=("Arial", 16), bg="white", fg="black", padx=10, pady=5, relief="raised", bd=2)
+    button_suggestion.place(x=15, y=260,width=180, height=80)
 
     #本月支出金額計算
     # 創建一個 Frame 作為框起來的區域
