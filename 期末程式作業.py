@@ -63,7 +63,7 @@ def open_index():  # 開啟首頁
     index.attributes('-fullscreen', True)   # 全螢幕
     index.bind('<Escape>', toggle_fullscreen) # 按Esc切換全螢幕模式
 
-    bg_image_index = Image.open("首頁.jpg")  # 替換為你的背景圖片檔案名稱或路徑
+    bg_image_index = Image.open("使用者驗證介面2.jpg")  # 替換為你的背景圖片檔案名稱或路徑
     bg_photo_index = ImageTk.PhotoImage(bg_image_index)
     bg_label_index = Tk.Label(index, image=bg_photo_index)
     bg_label_index.place(relwidth=1, relheight=1)
@@ -86,7 +86,7 @@ def open_index():  # 開啟首頁
 
     # 創建一個 Frame 作為表格容器
     button_frame = Frame(index)
-    button_frame.place(x=5,y=50)
+    button_frame.place(x=1000,y=30)
 
     #設定財務目標按鈕
     button_goal = Tk.Button(button_frame , text="財務目標", command=open_goal, font=("Arial", 16), bg="white", fg="black", padx=10, pady=5, relief="raised", bd=2,borderwidth=10)
@@ -123,12 +123,13 @@ def open_index():  # 開啟首頁
     label = Tk.Label(frame_labels_income, text="本月收入金額", font=("Arial", 16))
     label.pack(side=Tk.TOP, pady=5)
     # 創建收入金額顯示 Label
-    label_cost_num = Tk.Label(frame_labels_income, text=total_amount)
-    label_cost_num.pack(side=Tk.TOP)
+    label_income_num = Tk.Label(frame_labels_income, text=total_amount)
+    label_income_num.pack(side=Tk.TOP)
+
     #本月盈餘金額計算
     # 創建一個 Frame 作為框起來的區域
     frame_labels_surplus = Tk.Frame(index, bd=2, relief=Tk.GROOVE)
-    frame_labels_surplus.place(x=25, y=400, width=150, height=100)
+    frame_labels_surplus.place(x=1050, y=400, width=150, height=100)
     # 創建本月盈餘金額Label
     label = Tk.Label(frame_labels_surplus, text="本月盈餘金額", font=("Arial", 16))
     label.pack(side=Tk.TOP, pady=5)
@@ -139,7 +140,7 @@ def open_index():  # 開啟首頁
     #全部期間收支金額計算
     # 創建一個 Frame 作為框起來的區域
     frame_labels_all = Tk.Frame(index, bd=2, relief=Tk.GROOVE)
-    frame_labels_all.place(x=25, y=500, width=150, height=100)
+    frame_labels_all.place(x=1050, y=500, width=150, height=100)
     # 創建全部期間收支金額Label
     label = Tk.Label(frame_labels_all, text="全部期間收支金額", font=("Arial", 12))
     label.pack(side=Tk.TOP, pady=5)
@@ -147,10 +148,12 @@ def open_index():  # 開啟首頁
     label_cost_get = Tk.Label(frame_labels_all, text="此處放全部期間收支金額")
     label_cost_get.pack(side=Tk.TOP)
 
+
     image_path = "歡迎使用個人記帳管理系統.jpg"  # 替換為您的圖片檔案路徑
     original_image = Image.open(image_path)
     resized_image = original_image.resize((300, 300))
     global_photo = ImageTk.PhotoImage(resized_image)
+
 
     
 
@@ -164,13 +167,12 @@ def open_index():  # 開啟首頁
 
 
 
-
 ###-----支出頁面-----###
 def open_cost():  # 開啟支出介面
     global combo
     cost = Tk.Toplevel(root)
     cost.title("支出")
-    cost.attributes('-fullscreen', True)   # 全螢幕
+    #cost.attributes('-fullscreen', True)   # 全螢幕
     label_cost = Tk.Label(cost, text="請選擇支出日期", font=("Arial", 16))
     label_cost.place(x=300, y=50)
     # 創建日期選擇器
@@ -258,7 +260,7 @@ def open_cost():  # 開啟支出介面
         # 設置圓餅圖資料
         labels = items  # 各部分的標籤
         sizes = amounts  # 各部分的大小（百分比）
-        colors = ['#' + ''.join(random.choices('0123456789ABCDEF', k=6)) for _ in range(len(labels))]  # 顏色
+        colors = ['gold', 'yellowgreen', 'lightcoral', 'lightskyblue']  # 顏色
         explode = tuple(0.1 if i == max(amounts) else 0 for i in amounts)
         fig, ax = plt.subplots(figsize=(6, 6))
         ax.pie(sizes, explode=explode, labels=labels, colors=colors, autopct='%1.1f%%', shadow=True, startangle=140)
@@ -290,9 +292,7 @@ def open_cost():  # 開啟支出介面
             combo['values'] = list(combo['values']) + [new_category]
             combo.set(new_category)
             print(f"新增的支出項目: {new_category}")
-    
-    def cost_close():
-        cost.destroy()
+
     add_custom_button = Tk.Button(cost, text="自訂", command=add_custom_category, font=("Arial", 12))
     add_custom_button.place(x=1050, y=45)
     
@@ -305,10 +305,6 @@ def open_cost():  # 開啟支出介面
     # 創建新增紀錄的按鈕
     btn_add_record = Tk.Button(cost, text="新增紀錄", command=add_record, font=("Arial", 12))
     btn_add_record.place(x=1100, y=200)
-
-    # 創建返回的按鈕
-    btn_return = Tk.Button(cost, text="返回", command=cost_close ,font=("Arial", 12))
-    btn_return.place(x=1100, y=400)
 
     # 創建刪除所選項目的按鈕
     btn_delete_record = Tk.Button(cost, text="刪除選定項目", command=delete_selected, font=("Arial", 12))
@@ -331,7 +327,7 @@ def open_cost():  # 開啟支出介面
 def open_income():  # 開啟收入介面
     income = Tk.Toplevel(root)
     income.title("收入")
-    income.attributes('-fullscreen', True)   # 全螢幕
+    #income.attributes('-fullscreen', True)   # 全螢幕
     label_income = Tk.Label(income, text="請選擇收入日期", font=("Arial", 16))
     label_income.place(x=300, y=50)
     # 創建日期選擇器
@@ -344,8 +340,17 @@ def open_income():  # 開啟收入介面
     record_listbox = Listbox(income, width=50, height=10)
     record_listbox.place(x=650, y=150)
 
-    def income_close():
+    def on_income_close():
+        global total_amount
+        global label_income_num
+        global root
+        update_income_label(total_amount)
         income.destroy()
+        label_income_num.update_idletasks()
+        root.update_idletasks()
+        root.update()
+        print("收入介面已關閉，更新首頁")
+
     # 創建一個函式用來取得選擇的日期
     def get_selected_date():
         selected_date = cal.get_date()
@@ -373,7 +378,7 @@ def open_income():  # 開啟收入介面
             income_money_entry.delete(0, Tk.END)
 
             # 顯示目前總金額
-            目前_累計金額_顯示.config(text= total_amount)
+            目前_累計金額_顯示.config(text= total_cost)
 
         except ValueError:
             # 處理金額不是有效數字的情況
@@ -401,7 +406,7 @@ def open_income():  # 開啟收入介面
                 record_listbox.delete(selected_index)
 
                 # 顯示更新後的總金額
-                目前_累計金額_顯示.config(text=total_amount)
+                目前_累計金額_顯示.config(text=total_cost)
 
             except ValueError:
                 # 處理金額不是有效數字的情況
@@ -465,7 +470,7 @@ def open_income():  # 開啟收入介面
     income_money_entry.place(x=850, y=80)
 
     # 創建返回的按鈕
-    btn_return = Tk.Button(income, text="返回", command=income_close ,font=("Arial", 12))
+    btn_return = Tk.Button(income, text="返回", command=on_income_close ,font=("Arial", 12))
     btn_return.place(x=1100, y=400)
     # 創建新增紀錄的按鈕
     btn_add_record = Tk.Button(income, text="新增紀錄", command=add_record, font=("Arial", 12))
@@ -484,7 +489,7 @@ def open_income():  # 開啟收入介面
     # 創建新增圓餅圖的按鈕
     btn_add_record = Tk.Button(income, text="新增圓餅圖", command=open_income_pie_chart, font=("Arial", 12))
     btn_add_record.place(x=1100, y=300)
-
+    income.protocol("WM_DELETE_WINDOW", on_income_close)
 ###-----財務目標頁面-----###
 def open_goal():
     global selected_cost_limit_label, selected_income_goal_label,selected_cost_limit,selected_income_goal
@@ -525,7 +530,7 @@ def open_goal():
 
     # 創建一個 Label 用來顯示「目前」
     show_now = Tk.Label(goal, text="目前", font=("Arial", 20))
-    show_now.place(x=480, y=280)
+    show_now.place(x=470, y=280)
 
 def open_cost_limit():
     def set_limit_cost():
