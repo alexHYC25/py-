@@ -258,7 +258,7 @@ def open_cost():  # 開啟支出介面
         # 設置圓餅圖資料
         labels = items  # 各部分的標籤
         sizes = amounts  # 各部分的大小（百分比）
-        colors = ['gold', 'yellowgreen', 'lightcoral', 'lightskyblue']  # 顏色
+        colors = ['#' + ''.join(random.choices('0123456789ABCDEF', k=6)) for _ in range(len(labels))]  # 顏色
         explode = tuple(0.1 if i == max(amounts) else 0 for i in amounts)
         fig, ax = plt.subplots(figsize=(6, 6))
         ax.pie(sizes, explode=explode, labels=labels, colors=colors, autopct='%1.1f%%', shadow=True, startangle=140)
