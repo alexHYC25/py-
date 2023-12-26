@@ -207,7 +207,7 @@ def open_cost():  # 開啟支出介面
     global combo
     cost = Tk.Toplevel(root)
     cost.title("支出")
-    #cost.attributes('-fullscreen', True)   # 全螢幕
+    cost.attributes('-fullscreen', True)   # 全螢幕
     label_cost = Tk.Label(cost, text="請選擇支出日期", font=("Arial", 16))
     label_cost.place(x=300, y=50)
     # 創建日期選擇器
@@ -393,7 +393,7 @@ def open_cost():  # 開啟支出介面
 def open_income():  # 開啟收入介面
     income = Tk.Toplevel(root)
     income.title("收入")
-    #income.attributes('-fullscreen', True)   # 全螢幕
+    income.attributes('-fullscreen', True)   # 全螢幕
     label_income = Tk.Label(income, text="請選擇收入日期", font=("Arial", 16))
     label_income.place(x=300, y=50)
     # 創建日期選擇器
