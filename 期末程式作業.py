@@ -268,7 +268,7 @@ def open_cost():  # 開啟支出介面
             print("請輸入有效的金額。")
     
     def delete_selected():
-        global total_amount
+        global total_cost
 
         selected_index = record_listbox.curselection()
         if selected_index:
