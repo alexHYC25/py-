@@ -320,7 +320,20 @@ def open_cost():  # 開啟支出介面
     btn_add_record = Tk.Button(cost, text="新增圓餅圖", command=open_cost_pie_chart, font=("Arial", 12))
     btn_add_record.place(x=1100, y=300)
 
+    image_path = "橘色邊.jpg"  # 替換為您的圖片檔案路徑
+    original_image = Image.open(image_path)
+    resized_image = original_image.resize((200, 1000))
+    global_photo = ImageTk.PhotoImage(resized_image)
+
+
     
+
+    # 在視窗中顯示圖片
+    image_label = Tk.Label(cost, image=global_photo)
+    image_label.image = global_photo  # 保留對 PhotoImage 的引用，防止被垃圾回收
+    image_label.place(x=0, y=0)  # 調整 x 和 y 的值以控制圖片的位置
+    
+    cost.mainloop()    
 
 
 ###-----收入頁面-----###
@@ -378,7 +391,7 @@ def open_income():  # 開啟收入介面
             income_money_entry.delete(0, Tk.END)
 
             # 顯示目前總金額
-            目前_累計金額_顯示.config(text= total_cost)
+            目前_累計金額_顯示.config(text= total_amount)
 
         except ValueError:
             # 處理金額不是有效數字的情況
@@ -406,7 +419,7 @@ def open_income():  # 開啟收入介面
                 record_listbox.delete(selected_index)
 
                 # 顯示更新後的總金額
-                目前_累計金額_顯示.config(text=total_cost)
+                目前_累計金額_顯示.config(text=total_amount)
 
             except ValueError:
                 # 處理金額不是有效數字的情況
@@ -490,6 +503,22 @@ def open_income():  # 開啟收入介面
     btn_add_record = Tk.Button(income, text="新增圓餅圖", command=open_income_pie_chart, font=("Arial", 12))
     btn_add_record.place(x=1100, y=300)
     income.protocol("WM_DELETE_WINDOW", on_income_close)
+
+    image_path = "橘色邊.jpg"  # 替換為您的圖片檔案路徑
+    original_image = Image.open(image_path)
+    resized_image = original_image.resize((200, 1000))
+    global_photo = ImageTk.PhotoImage(resized_image)
+
+
+    
+
+    # 在視窗中顯示圖片
+    image_label = Tk.Label(income, image=global_photo)
+    image_label.image = global_photo  # 保留對 PhotoImage 的引用，防止被垃圾回收
+    image_label.place(x=0, y=0)  # 調整 x 和 y 的值以控制圖片的位置
+    
+    income.mainloop()
+
 ###-----財務目標頁面-----###
 def open_goal():
     global selected_cost_limit_label, selected_income_goal_label,selected_cost_limit,selected_income_goal
@@ -532,6 +561,21 @@ def open_goal():
     show_now = Tk.Label(goal, text="目前", font=("Arial", 20))
     show_now.place(x=470, y=280)
 
+    image_path = "橘色邊.jpg"  # 替換為您的圖片檔案路徑
+    original_image = Image.open(image_path)
+    resized_image = original_image.resize((100, 1000))
+    global_photo = ImageTk.PhotoImage(resized_image)
+
+
+    
+
+    # 在視窗中顯示圖片
+    image_label = Tk.Label(goal, image=global_photo)
+    image_label.image = global_photo  # 保留對 PhotoImage 的引用，防止被垃圾回收
+    image_label.place(x=0, y=0)  # 調整 x 和 y 的值以控制圖片的位置
+    
+    goal.mainloop()
+    
 def open_cost_limit():
     def set_limit_cost():
         global cost_limit_value
