@@ -488,6 +488,7 @@ def open_income():  # 開啟收入介面
     btn_add_record = Tk.Button(income, text="新增圓餅圖", command=open_income_pie_chart, font=("Arial", 12))
     btn_add_record.place(x=1100, y=300)
     income.protocol("WM_DELETE_WINDOW", on_income_close)
+
 ###-----財務目標頁面-----###
 def open_goal():
     global selected_cost_limit_label, selected_income_goal_label,selected_cost_limit,selected_income_goal
@@ -528,7 +529,7 @@ def open_goal():
 
     # 創建一個 Label 用來顯示「目前」
     show_now = Tk.Label(goal, text="目前", font=("Arial", 20))
-    show_now.place(x=470, y=280)
+    show_now.place(x=480, y=280)
 
 def open_cost_limit():
     def set_limit_cost():
