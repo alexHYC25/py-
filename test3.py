@@ -194,7 +194,6 @@ def open_index():  # 開啟首頁
 
 
 
-
 ###-----支出頁面-----###
 def open_cost():  # 開啟支出介面
     global label_cost_num
@@ -581,7 +580,7 @@ def open_goal():
     button_cost_limit.pack()
     button_cost_limit.place(x=100, y=300,width=200, height=80)
     #設定儲蓄目標按鈕
-    button_income_goal = Tk.Button(goal , text="設定收入目標", command=open_income_goal, font=("Arial", 16), bg="white", fg="black", padx=10, pady=5, relief="raised", bd=2,borderwidth=10)
+    button_income_goal = Tk.Button(goal , text="設定儲蓄目標", command=open_income_goal, font=("Arial", 16), bg="white", fg="black", padx=10, pady=5, relief="raised", bd=2,borderwidth=10)
     button_income_goal.pack()
     button_income_goal.place(x=100, y=400,width=200, height=80)
     # 創建一個 Label 用來顯示目前支出
@@ -615,20 +614,8 @@ def open_goal():
     resized_image = original_image.resize((100, 1000))
     global_photo = ImageTk.PhotoImage(resized_image)
 
-    label_相差 = Tk.Label(goal, text="離目標相差：", font=("Arial", 20))
-    label_相差.place(x=800, y=325)
-    a=cost_limit_value-total_cost
-    label_相差_num = Tk.Label(goal, text=0,font=("Arial", 20))
-    label_相差_num.place(x=1000, y=325)
 
-
-
-    label_相差_income = Tk.Label(goal, text="離目標相差：", font=("Arial", 20))
-    label_相差_income.place(x=800, y=425)
-    b=income_goal_value-total_amount
-    label_相差_num_income = Tk.Label(goal, text=0,font=("Arial", 20))
-    label_相差_num_income.place(x=1000, y=425)
-
+    
 
     # 在視窗中顯示圖片
     image_label = Tk.Label(goal, image=global_photo)
@@ -636,11 +623,13 @@ def open_goal():
     image_label.place(x=0, y=0)  # 調整 x 和 y 的值以控制圖片的位置
     
     goal.mainloop()
+
+    
     
 def open_cost_limit():
     def set_limit_cost():
         global cost_limit_value
-        cost_value = cost_money_entry.get() 
+        cost_value = cost_money_entry.get()
         # 可在這裡進行其他操作或儲存值
         cost_limit_value = cost_value  # 將值存儲到全局變數中
         selected_cost_limit_label.config(text=cost_limit_value)  # 更新主要介面的標籤
