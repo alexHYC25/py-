@@ -14,6 +14,7 @@ def run_once():
     global total_cost
     global label_income_num
     global label_cost_num
+    global cost_limit_value
     global global_photo
     global run_once_has_run
     global label_cost_get
@@ -25,6 +26,7 @@ def run_once():
         total_cost=0
         label_cost_num = None
         label_income_num = None
+        cost_limit_value = 0
         label_cost_get = None
         label_cost_and_income = None
         global_photo = None
@@ -573,6 +575,8 @@ def open_income():  # 開啟收入介面
 ###-----財務目標頁面-----###
 def open_goal():
     global selected_cost_limit_label, selected_income_goal_label,selected_cost_limit,selected_income_goal
+    global total_cost
+    global cost_limit_value
     goal = Tk.Toplevel(root)
     goal.title("財務目標")
     #goal.attributes('-fullscreen', True)   # 全螢幕
@@ -587,7 +591,7 @@ def open_goal():
     button_income_goal.pack()
     button_income_goal.place(x=100, y=400,width=200, height=80)
     # 創建一個 Label 用來顯示目前支出
-    selected_cost_limit = Tk.Label(goal, text="0", font=("Arial", 16))
+    selected_cost_limit = Tk.Label(goal, text=total_cost, font=("Arial", 16))
     selected_cost_limit.place(x=500, y=325)
     # 創建一個 Label 用來顯示目前收入
     selected_income_goal = Tk.Label(goal, text="0", font=("Arial", 16))
@@ -599,7 +603,7 @@ def open_goal():
     selected_slash2 = Tk.Label(goal, text="/", font=("Arial", 16))
     selected_slash2.place(x=600, y=325)
     # 創建一個 Label 用來顯示設定的支出上限
-    selected_cost_limit_label = Tk.Label(goal, text="0", font=("Arial", 16))
+    selected_cost_limit_label = Tk.Label(goal, text=cost_limit_value, font=("Arial", 16))
     selected_cost_limit_label.place(x=700, y=325)
     # 創建一個 Label 用來顯示設定的儲蓄目標
     selected_income_goal_label = Tk.Label(goal, text="0", font=("Arial", 16))
@@ -639,6 +643,7 @@ def open_cost_limit():
     cost_limit.title("設定支出上限")
     cost_money_entry = Tk.Entry(cost_limit, width=22)
     cost_money_entry.place(x=20, y=50)
+    selected_cost_limit_label.config(text=cost_limit_value)
     button_cost_limit = Tk.Button(cost_limit, text="設定", command=set_limit_cost, font=("Arial", 12), bg="white", fg="black", padx=10, pady=5, relief="raised", bd=2)
     button_cost_limit.pack()
     button_cost_limit.place(x=50, y=80, width=100, height=50)
