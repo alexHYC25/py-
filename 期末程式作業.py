@@ -41,7 +41,7 @@ def update_income_label(new_amount):
     global label_cost_and_income
     label_income_num.config(text=str(new_amount))
     label_cost_get.config(text= total_amount - total_cost)
-    label_cost_and_income.config(text='支出: '+str(total_cost)+"\n"+'收入: '+(total_amount))
+    label_cost_and_income.config(text='支出: '+str(total_cost)+"\n"+'收入: '+str(total_amount))
     root.update()
     root.update_idletasks()
 
@@ -55,7 +55,7 @@ def update_cost_label(new_amount):
     global label_cost_and_income
     label_cost_num.config(text=str(new_amount))
     label_cost_get.config(text= total_amount - total_cost)
-    label_cost_and_income.config(text='支出: '+str(total_cost)+"\n"+'收入: '+(total_amount))
+    label_cost_and_income.config(text='支出: '+str(total_cost)+"\n"+'收入: '+str(total_amount))
     root.update()
     root.update_idletasks()
 
