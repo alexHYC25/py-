@@ -170,7 +170,7 @@ def open_cost():  # 開啟支出介面
     global combo
     cost = Tk.Toplevel(root)
     cost.title("支出")
-    #cost.attributes('-fullscreen', True)   # 全螢幕
+    cost.attributes('-fullscreen', True)   # 全螢幕
     label_cost = Tk.Label(cost, text="請選擇支出日期", font=("Arial", 16))
     label_cost.place(x=300, y=50)
     # 創建日期選擇器
@@ -290,7 +290,9 @@ def open_cost():  # 開啟支出介面
             combo['values'] = list(combo['values']) + [new_category]
             combo.set(new_category)
             print(f"新增的支出項目: {new_category}")
-
+    
+    def cost_close():
+        cost.destroy()
     add_custom_button = Tk.Button(cost, text="自訂", command=add_custom_category, font=("Arial", 12))
     add_custom_button.place(x=1050, y=45)
     
@@ -303,6 +305,10 @@ def open_cost():  # 開啟支出介面
     # 創建新增紀錄的按鈕
     btn_add_record = Tk.Button(cost, text="新增紀錄", command=add_record, font=("Arial", 12))
     btn_add_record.place(x=1100, y=200)
+
+    # 創建返回的按鈕
+    btn_return = Tk.Button(cost, text="返回", command=cost_close ,font=("Arial", 12))
+    btn_return.place(x=1100, y=400)
 
     # 創建刪除所選項目的按鈕
     btn_delete_record = Tk.Button(cost, text="刪除選定項目", command=delete_selected, font=("Arial", 12))
@@ -325,7 +331,7 @@ def open_cost():  # 開啟支出介面
 def open_income():  # 開啟收入介面
     income = Tk.Toplevel(root)
     income.title("收入")
-    #income.attributes('-fullscreen', True)   # 全螢幕
+    income.attributes('-fullscreen', True)   # 全螢幕
     label_income = Tk.Label(income, text="請選擇收入日期", font=("Arial", 16))
     label_income.place(x=300, y=50)
     # 創建日期選擇器
@@ -338,17 +344,8 @@ def open_income():  # 開啟收入介面
     record_listbox = Listbox(income, width=50, height=10)
     record_listbox.place(x=650, y=150)
 
-    def on_income_close():
-        global total_amount
-        global label_income_num
-        global root
-        update_income_label(total_amount)
+    def income_close():
         income.destroy()
-        label_income_num.update_idletasks()
-        root.update_idletasks()
-        root.update()
-        print("收入介面已關閉，更新首頁")
-
     # 創建一個函式用來取得選擇的日期
     def get_selected_date():
         selected_date = cal.get_date()
@@ -468,7 +465,7 @@ def open_income():  # 開啟收入介面
     income_money_entry.place(x=850, y=80)
 
     # 創建返回的按鈕
-    btn_return = Tk.Button(income, text="返回", command=on_income_close ,font=("Arial", 12))
+    btn_return = Tk.Button(income, text="返回", command=income_close ,font=("Arial", 12))
     btn_return.place(x=1100, y=400)
     # 創建新增紀錄的按鈕
     btn_add_record = Tk.Button(income, text="新增紀錄", command=add_record, font=("Arial", 12))
@@ -487,7 +484,6 @@ def open_income():  # 開啟收入介面
     # 創建新增圓餅圖的按鈕
     btn_add_record = Tk.Button(income, text="新增圓餅圖", command=open_income_pie_chart, font=("Arial", 12))
     btn_add_record.place(x=1100, y=300)
-    income.protocol("WM_DELETE_WINDOW", on_income_close)
 
 ###-----財務目標頁面-----###
 def open_goal():
