@@ -670,8 +670,6 @@ def open_income_goal():
     button_income_goal.pack()
     button_income_goal.place(x=50, y=80, width=100, height=50)
 
-
-
 def open_analysis():  # 開啟財務圖表分析介面
     analysis = Tk.Toplevel(root)
     analysis.title("財務圖表分析")
