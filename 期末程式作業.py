@@ -13,14 +13,20 @@ def run_once():
     global total_amount
     global total_cost
     global label_income_num
+    global label_cost_num
     global global_photo
     global run_once_has_run
+    global label_cost_get
+    global label_cost_and_income
     if not run_once_has_run:
         print("This will only run once")
         run_once_has_run = True
         total_amount = 0
         total_cost=0
+        label_cost_num = None
         label_income_num = None
+        label_cost_get = None
+        label_cost_and_income = None
         global_photo = None
         
 run_once_has_run = False  # 初始化標記為False，表示尚未運行
@@ -28,10 +34,31 @@ run_once_has_run = False  # 初始化標記為False，表示尚未運行
 #更新本月收入金額
 def update_income_label(new_amount):
     global label_income_num
+    global total_cost
+    global total_amount
     global root
+    global label_cost_get
+    global label_cost_and_income
     label_income_num.config(text=str(new_amount))
+    label_cost_get.config(text= total_amount - total_cost)
+    label_cost_and_income.config(text='支出: '+str(total_cost)+"\n"+'收入: '+(total_amount))
     root.update()
     root.update_idletasks()
+
+
+def update_cost_label(new_amount):
+    global label_cost_num
+    global total_amount
+    global total_cost
+    global root
+    global label_cost_get
+    global label_cost_and_income
+    label_cost_num.config(text=str(new_amount))
+    label_cost_get.config(text= total_amount - total_cost)
+    label_cost_and_income.config(text='支出: '+str(total_cost)+"\n"+'收入: '+(total_amount))
+    root.update()
+    root.update_idletasks()
+
 
 # 設置中文字體
 plt.rcParams['font.sans-serif'] = ['Arial Unicode MS']  # 將字體設置為支援中文的字型，例如 'Arial Unicode MS'
@@ -56,8 +83,13 @@ def check_login():# 檢查登入資料
 ##以下為首頁程式選擇介面
 def open_index():  # 開啟首頁
     global label_income_num
+    global label_cost_num
     global global_photo
+    global label_cost_and_income
+    global label_cost_get
     global root
+    global total_cost
+    global total_amount
     index = Tk.Toplevel(root)
     index.title("首頁")
     index.attributes('-fullscreen', True)   # 全螢幕
@@ -112,7 +144,7 @@ def open_index():  # 開啟首頁
     label_cost.pack(side=Tk.TOP, pady=5)
 
     # 創建第二個 Label
-    label_cost_num = Tk.Label(frame_labels_cost, text="此處放支出金額")
+    label_cost_num = Tk.Label(frame_labels_cost, text=total_cost)
     label_cost_num.pack(side=Tk.TOP)
     
     #本月收入金額計算
@@ -134,7 +166,7 @@ def open_index():  # 開啟首頁
     label = Tk.Label(frame_labels_surplus, text="本月盈餘金額", font=("Arial", 16))
     label.pack(side=Tk.TOP, pady=5)
     # 創建盈餘金額顯示 Label
-    label_cost_get = Tk.Label(frame_labels_surplus, text="此處放盈餘金額")
+    label_cost_get = Tk.Label(frame_labels_surplus, text=(total_amount - total_cost))
     label_cost_get.pack(side=Tk.TOP)
 
     #全部期間收支金額計算
@@ -145,8 +177,8 @@ def open_index():  # 開啟首頁
     label = Tk.Label(frame_labels_all, text="全部期間收支金額", font=("Arial", 12))
     label.pack(side=Tk.TOP, pady=5)
     # 創建全部期間收支金額顯示 Label
-    label_cost_get = Tk.Label(frame_labels_all, text="此處放全部期間收支金額")
-    label_cost_get.pack(side=Tk.TOP)
+    label_cost_and_income = Tk.Label(frame_labels_all, text='支出: '+str(total_cost)+"\n"+'收入: '+str(total_amount))
+    label_cost_and_income.pack(side=Tk.TOP)
 
 
     image_path = "歡迎使用個人記帳管理系統.jpg"  # 替換為您的圖片檔案路徑
@@ -169,6 +201,7 @@ def open_index():  # 開啟首頁
 
 ###-----支出頁面-----###
 def open_cost():  # 開啟支出介面
+    global label_cost_num
     global combo
     cost = Tk.Toplevel(root)
     cost.title("支出")
@@ -185,12 +218,30 @@ def open_cost():  # 開啟支出介面
     record_listbox = Listbox(cost, width=50, height=10)
     record_listbox.place(x=650, y=150)
     # 創建一個函式用來取得選擇的日期
+    
+    
+    
+    def on_cost_close():
+        global total_cost
+        global label_cost_num
+        global root
+        update_cost_label(total_cost)
+        cost.destroy()
+        label_cost_num.update_idletasks()
+        root.update_idletasks()
+        root.update()
+        print("支出介面已關閉，更新首頁")
+
+    
+    btn_return = Tk.Button(cost, text="返回", command=on_cost_close ,font=("Arial", 12))
+    btn_return.place(x=1100, y=400)
+    
     def get_selected_date():
         selected_date = cal.get_date()
         selected_date_label.config(text=f"選擇的日期: {selected_date}")
 
     def add_record():
-        global total_amount
+        global total_cost
         date_str = selected_date_label.cget("text")
         category = combo_var.get()
         amount_str = cost_money_entry.get()
@@ -200,7 +251,7 @@ def open_cost():  # 開啟支出介面
             amount = float(amount_str)
 
             # 更新總金額變數
-            total_amount += amount
+            total_cost += amount
 
             # 更新列表
             record = f"{date_str}, 項目: {category}, 金額: {amount}"
@@ -210,7 +261,7 @@ def open_cost():  # 開啟支出介面
             cost_money_entry.delete(0, Tk.END)
 
             # 顯示目前總金額
-            目前_累計金額_顯示.config(text= total_amount)
+            目前_累計金額_顯示.config(text= total_cost)
 
         except ValueError:
             # 處理金額不是有效數字的情況
@@ -232,13 +283,13 @@ def open_cost():  # 開啟支出介面
                 deleted_amount = float(amount_str)
 
                 # 更新總金額變數
-                total_amount -= deleted_amount
+                total_cost -= deleted_amount
 
                 # 刪除列表中的項目
                 record_listbox.delete(selected_index)
 
                 # 顯示更新後的總金額
-                目前_累計金額_顯示.config(text=total_amount)
+                目前_累計金額_顯示.config(text=total_cost)
 
             except ValueError:
                 # 處理金額不是有效數字的情況
