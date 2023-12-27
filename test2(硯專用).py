@@ -7,6 +7,7 @@ from datetime import date, timedelta
 from tkcalendar import Calendar
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import pandas as pd
 import random
 import csv
 import os
@@ -715,6 +716,26 @@ def open_analysis():  # 開啟財務圖表分析介面
 def open_suggestion():  # 開啟財務分析與建議介面
     suggestion = Tk.Toplevel(root)
     suggestion.title("財務分析與建議")
+
+    def calculate_highest_expense():
+        csv_filename = 'expenses.csv'  # 請替換成您的 CSV 檔案路徑
+        df = pd.read_csv(csv_filename, skiprows=1)
+
+        grouped = df.groupby('項目')['金額'].sum().reset_index()
+        max_amount_item = grouped.loc[grouped['金額'].idxmax()]
+
+        suggestion_text = f"建議：{max_amount_item['項目']} 的支出最高，金額為 {max_amount_item['金額']}"
+
+        suggestion_label.config(text=suggestion_text)  # 更新建議內容
+
+    # 創建一個按鈕觸發計算最高支出的函式
+    calculate_button = Tk.Button(suggestion, text="計算最高支出", command=calculate_highest_expense)
+    calculate_button.place(x=500, y=400)
+
+    # 創建一個 Label 來顯示建議
+    suggestion_label = Tk.Label(suggestion, text="", font=("Arial", 12))
+    suggestion_label.place(x=500, y=450)
+
 
 # 建立主視窗
 root = Tk.Tk()
