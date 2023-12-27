@@ -10,6 +10,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import random
 import csv
 import os
+import webbrowser
 
 def run_once():
     global total_amount
@@ -124,15 +125,11 @@ def open_index():  # 開啟首頁
 
     #設定財務目標按鈕
     button_goal = Tk.Button(index , text="財務目標", command=open_goal, font=("Arial", 16), bg="white", fg="black", padx=10, pady=5, relief="raised", bd=2)
-    button_goal.place(x=15, y=100,width=180, height=80)
-
-    #設定財務圖表分析按鈕
-    button_analysis = Tk.Button(index , text="財務圖表分析", command=open_analysis, font=("Arial", 16), bg="white", fg="black", padx=10, pady=5, relief="raised", bd=2)
-    button_analysis.place(x=15, y=180,width=180, height=80)
+    button_goal.place(x=15, y=150,width=180, height=80)
 
     #財務分析與建議按鈕
     button_suggestion = Tk.Button(index , text="財務分析與建議", command=open_suggestion, font=("Arial", 16), bg="white", fg="black", padx=10, pady=5, relief="raised", bd=2)
-    button_suggestion.place(x=15, y=260,width=180, height=80)
+    button_suggestion.place(x=15, y=230,width=180, height=80)
 
     #本月支出金額計算
     # 創建一個 Frame 作為框起來的區域
@@ -853,8 +850,8 @@ def open_analysis():  # 開啟財務圖表分析介面
     analysis.title("財務圖表分析")
 
 def open_suggestion():  # 開啟財務分析與建議介面
-    suggestion = Tk.Toplevel(root)
-    suggestion.title("財務分析與建議")
+    url = "https://www.moneydj.com/rich/guestHome.aspx"  # 將這裡的 URL 替換為您想要打開的網頁
+    webbrowser.open(url)
 
 # 建立主視窗
 root = Tk.Tk()
