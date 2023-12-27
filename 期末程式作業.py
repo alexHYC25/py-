@@ -146,6 +146,14 @@ def open_index():  # 開啟首頁
     # 創建第二個 Label
     label_cost_num = Tk.Label(frame_labels_cost, text=total_cost)
     label_cost_num.pack(side=Tk.TOP)
+
+    # 創建第三個 Label
+    label_cost_lab = Tk.Label(index, text="支出", font=("Arial", 16))
+    label_cost_lab.place(x=900, y=150, width=100, height=50)
+
+    # 創建第四個 Label
+    label_income_lab = Tk.Label(index, text="收入", font=("Arial", 16))
+    label_income_lab.place(x=900, y=450, width=100, height=50)
     
     #本月收入金額計算
     # 創建一個 Frame 作為框起來的區域
@@ -263,7 +271,7 @@ def open_index():  # 開啟首頁
     tree2.heading("項目", text="項目", anchor=Tk.CENTER)
     tree2.heading("金額", text="金額", anchor=Tk.CENTER)
 
-    tree2.place(x=900, y=400, width=400, height=200)
+    tree2.place(x=900, y=500, width=400, height=200)
 
     # 定时更新 CSV 内容
     update_csv_content1(tree2)
