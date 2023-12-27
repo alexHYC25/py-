@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import random
 import csv
+import os
 
 def run_once():
     global total_amount
@@ -49,7 +50,6 @@ def update_income_label(new_amount):
     root.update()
     root.update_idletasks()
 
-
 def update_cost_label(new_amount):
     global label_cost_num
     global total_amount
@@ -62,7 +62,6 @@ def update_cost_label(new_amount):
     label_cost_and_income.config(text='支出: '+str(total_cost)+"\n"+'收入: '+str(total_amount))
     root.update()
     root.update_idletasks()
-
 
 # 設置中文字體
 plt.rcParams['font.sans-serif'] = ['Arial Unicode MS']  # 將字體設置為支援中文的字型，例如 'Arial Unicode MS'
@@ -178,14 +177,10 @@ def open_index():  # 開啟首頁
     label_cost_and_income = Tk.Label(frame_labels_all, text='支出: '+str(total_cost)+"\n"+'收入: '+str(total_amount))
     label_cost_and_income.pack(side=Tk.TOP)
 
-
     image_path = "歡迎使用個人記帳管理系統.jpg"  # 替換為您的圖片檔案路徑
     original_image = Image.open(image_path)
     resized_image = original_image.resize((300, 300))
     global_photo = ImageTk.PhotoImage(resized_image)
-
-
-    
 
     # 在視窗中顯示圖片
     image_label = Tk.Label(index, image=global_photo)
@@ -193,9 +188,6 @@ def open_index():  # 開啟首頁
     image_label.place(x=500, y=150)  # 調整 x 和 y 的值以控制圖片的位置
     
     index.mainloop()
-
-
-
 
 ###-----支出頁面-----###
 def open_cost():  # 開啟支出介面
@@ -218,23 +210,25 @@ def open_cost():  # 開啟支出介面
     # 創建一個函式用來取得選擇的日期
     
     def export_to_csv():
-        filename = "expenses.csv"  # 欲匯出的CSV檔案名稱
+        filename = "expenses.csv"  # 設定CSV檔案名稱
         header = ["日期", "項目", "金額"]  # CSV檔案的標題行
 
-        with open(filename, mode='w', newline='', encoding='big5') as file:
+        # 收集支出資料
+        expenses_data = []
+        for item in record_listbox.get(0, Tk.END):
+            parts = item.split(", ")
+            date = parts[0].split(": ")[1]
+            category = parts[1].split(": ")[1]
+            amount = parts[2].split(": ")[1]
+            expenses_data.append([date, category, amount])
+
+        # 檢查檔案是否存在，如果不存在則寫入標題行
+        file_exists = os.path.isfile(filename)
+        with open(filename, mode='a', newline='', encoding='big5') as file:
             writer = csv.writer(file)
-        
-        # 寫入標題行
-            writer.writerow(header)
-        
-        # 從紀錄列表中取得每一項目，並將其寫入CSV檔案
-            for item in record_listbox.get(0, Tk.END):
-                parts = item.split(", ")
-                date = parts[0].split(": ")[1]
-                category = parts[1].split(": ")[1]
-                amount = parts[2].split(": ")[1]
-            
-                writer.writerow([date, category, amount])
+            if not file_exists:
+                writer.writerow(header)
+            writer.writerows(expenses_data)
 
     btn_export_csv = Tk.Button(cost, text="匯出", command=export_to_csv, font=("Arial", 12))
     btn_export_csv.place(x=1100, y=350)
@@ -394,16 +388,12 @@ def open_cost():  # 開啟支出介面
     resized_image = original_image.resize((200, 1000))
     global_photo = ImageTk.PhotoImage(resized_image)
 
-
-    
-
     # 在視窗中顯示圖片
     image_label = Tk.Label(cost, image=global_photo)
     image_label.image = global_photo  # 保留對 PhotoImage 的引用，防止被垃圾回收
     image_label.place(x=0, y=0)  # 調整 x 和 y 的值以控制圖片的位置
     
     cost.mainloop()    
-
 
 ###-----收入頁面-----###
 def open_income():  # 開啟收入介面
@@ -423,23 +413,25 @@ def open_income():  # 開啟收入介面
     record_listbox.place(x=650, y=150)
 
     def export_to_csv():
-        filename = "income.csv"  # 欲匯出的CSV檔案名稱
+        filename = "income.csv"  # 設定CSV檔案名稱
         header = ["日期", "項目", "金額"]  # CSV檔案的標題行
 
-        with open(filename, mode='w', newline='', encoding='big5') as file:
+        # 收集支出資料
+        income_data = []
+        for item in record_listbox.get(0, Tk.END):
+            parts = item.split(", ")
+            date = parts[0].split(": ")[1]
+            category = parts[1].split(": ")[1]
+            amount = parts[2].split(": ")[1]
+            income_data.append([date, category, amount])
+
+        # 檢查檔案是否存在，如果不存在則寫入標題行
+        file_exists = os.path.isfile(filename)
+        with open(filename, mode='a', newline='', encoding='big5') as file:
             writer = csv.writer(file)
-        
-        # 寫入標題行
-            writer.writerow(header)
-        
-        # 從紀錄列表中取得每一項目，並將其寫入CSV檔案
-            for item in record_listbox.get(0, Tk.END):
-                parts = item.split(", ")
-                date = parts[0].split(": ")[1]
-                category = parts[1].split(": ")[1]
-                amount = parts[2].split(": ")[1]
-            
-                writer.writerow([date, category, amount])
+            if not file_exists:
+                writer.writerow(header)
+            writer.writerows(income_data)
 
     btn_export_csv = Tk.Button(income, text="匯出", command=export_to_csv, font=("Arial", 12))
     btn_export_csv.place(x=1100, y=350)
@@ -600,9 +592,6 @@ def open_income():  # 開啟收入介面
     resized_image = original_image.resize((200, 1000))
     global_photo = ImageTk.PhotoImage(resized_image)
 
-
-    
-
     # 在視窗中顯示圖片
     image_label = Tk.Label(income, image=global_photo)
     image_label.image = global_photo  # 保留對 PhotoImage 的引用，防止被垃圾回收
@@ -691,6 +680,7 @@ def open_cost_limit():
         selected_cost_limit_label.config(text=cost_limit_value)# 更新主要介面的標籤
         label_相差_num.config(text=(int(cost_limit_value)-total_cost))
         cost_limit.destroy()
+
     cost_limit = Tk.Toplevel(root)
     cost_limit.title("設定支出上限")
     cost_money_entry = Tk.Entry(cost_limit, width=22)
@@ -709,6 +699,7 @@ def open_income_goal():
         income_goal_value = income_value  # 將值存儲到全局變數中
         selected_income_goal_label.config(text=income_goal_value)  # 更新主要介面的標籤
         income_goal.destroy()
+
     income_goal = Tk.Toplevel(root)
     income_goal.title("設定儲蓄目標")
     income_money_entry = Tk.Entry(income_goal, width=22)
@@ -790,9 +781,7 @@ def animate(frame):
 # 开始动画
 animate(0)
 
-
 root.after(0, run_once)
 
 # 啟動主迴圈
 root.mainloop()
-
