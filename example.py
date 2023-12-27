@@ -1,3 +1,4 @@
+'''
 #主視窗（Tk）：
 import tkinter as tk
 
@@ -94,3 +95,21 @@ btn_get_date.pack(pady=10)
 # 創建下拉式選單
 combo = ttk.Combobox(root, textvariable=combo_var, values=["選項1", "選項2", "選項3"])
 combo.pack(pady=20)
+'''
+
+import tkinter as Tk
+import webbrowser
+
+def open_webpage():
+    url = "https://www.youtube.com/"  # 將這裡的 URL 替換為您想要打開的網頁
+    webbrowser.open(url)
+
+# 創建主窗口
+root = Tk.Tk()
+
+# 創建一個按鈕，當按鈕被點擊時，調用 open_webpage 函數
+button = Tk.Button(root, text="打開網頁", command=open_webpage)
+button.pack(pady=20)
+
+# 啟動 Tkinter 主循環
+root.mainloop()
