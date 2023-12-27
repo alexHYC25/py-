@@ -190,6 +190,83 @@ def open_index():  # 開啟首頁
     image_label.image = global_photo  # 保留對 PhotoImage 的引用，防止被垃圾回收
     image_label.place(x=500, y=150)  # 調整 x 和 y 的值以控制圖片的位置
     
+# 創建一個函式用來更新 CSV 內容
+    def update_csv_content(tree):
+        # 清空 Treeview 中的所有項目
+        tree.delete(*tree.get_children())
+
+        try:
+            # 打开 CSV 文件并读取数据
+            with open('expenses.csv', 'r', newline='', encoding='BIG5') as file:
+                reader = csv.reader(file)
+                for row in reader:
+                    # 将每一行数据添加到 Treeview 中
+                    tree.insert("", Tk.END, values=row)
+        except FileNotFoundError:
+            print("CSV file not found.")
+        
+
+        # 每隔 5 秒调用一次函数
+        tree.after(5000, update_csv_content, tree)
+
+    # 创建 Treeview 用于显示 CSV 内容
+    tree = ttk.Treeview(index)
+    tree["columns"] = ("日期", "項目", "金額")
+
+    # 设置 Treeview 列
+    tree.column("#0", width=0, stretch=Tk.NO)  # 隐藏索引列
+    tree.column("日期", anchor=Tk.CENTER, width=100)
+    tree.column("項目", anchor=Tk.CENTER, width=100)
+    tree.column("金額", anchor=Tk.CENTER, width=100)
+
+    tree.heading("#0", text="", anchor=Tk.CENTER)
+    tree.heading("日期", text="日期", anchor=Tk.CENTER)
+    tree.heading("項目", text="項目", anchor=Tk.CENTER)
+    tree.heading("金額", text="金額", anchor=Tk.CENTER)
+
+    tree.place(x=1000, y=200, width=400, height=200)
+
+    # 定时更新 CSV 内容
+    update_csv_content(tree)
+
+    def update_csv_content_income(tree2):
+        # 清空 Treeview 中的所有項目
+        tree2.delete(*tree2.get_children())
+
+        try:
+            # 打开 CSV 文件并读取数据
+            with open('income.csv', 'r', newline='', encoding='BIG5') as file:
+                reader = csv.reader(file)
+                for row in reader:
+                    # 将每一行数据添加到 Treeview 中
+                    tree2.insert("", Tk.END, values=row)
+        except FileNotFoundError:
+            print("CSV file not found.")
+        
+
+        # 每隔 5 秒调用一次函数
+        tree2.after(5000, update_csv_content_income, tree2)
+    
+    # 创建 Treeview 用于显示 CSV 内容
+    tree2 = ttk.Treeview(index)
+    tree2["columns"] = ("日期", "項目", "金額")
+
+    # 设置 Treeview 列
+    tree2.column("#0", width=0, stretch=Tk.NO)  # 隐藏索引列
+    tree2.column("日期", anchor=Tk.CENTER, width=100)
+    tree2.column("項目", anchor=Tk.CENTER, width=100)
+    tree2.column("金額", anchor=Tk.CENTER, width=100)
+
+    tree2.heading("#0", text="", anchor=Tk.CENTER)
+    tree2.heading("日期", text="日期", anchor=Tk.CENTER)
+    tree2.heading("項目", text="項目", anchor=Tk.CENTER)
+    tree2.heading("金額", text="金額", anchor=Tk.CENTER)
+
+    tree2.place(x=1000, y=450, width=400, height=200)
+
+    # 定时更新 CSV 内容
+    update_csv_content_income(tree2)
+
     index.mainloop()
 
 ###-----支出頁面-----###

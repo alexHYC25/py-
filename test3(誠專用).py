@@ -234,7 +234,7 @@ def open_index():  # 開啟首頁
 
         try:
             # 打开 CSV 文件并读取数据
-            with open('expenses.csv', 'r', newline='', encoding='big5hkscs', errors='replace') as file:
+            with open('income.csv', 'r', newline='', encoding='BIG5') as file:
                 reader = csv.reader(file)
                 for row in reader:
                     # 将每一行数据添加到 Treeview 中
