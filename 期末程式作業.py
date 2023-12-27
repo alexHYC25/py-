@@ -235,7 +235,7 @@ def open_index():  # 開啟首頁
 
         try:
             # 打开 CSV 文件并读取数据
-            with open('income.csv', 'r', newline='', encoding='BIG5') as file:
+            with open('income.csv', 'r', newline='', encoding='UTF-8') as file:
                 reader = csv.reader(file)
                 for row in reader:
                     # 将每一行数据添加到 Treeview 中
@@ -539,7 +539,7 @@ def open_income():  # 開啟收入介面
         filename = "income.csv"  # 設定CSV檔案名稱
         header = ["日期", "項目", "金額"]  # CSV檔案的標題行
 
-        # 收集支出資料
+        # 收集收入資料
         income_data = []
         for item in record_listbox.get(0, Tk.END):
             parts = item.split(", ")
