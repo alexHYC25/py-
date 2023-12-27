@@ -8,22 +8,29 @@ from tkcalendar import Calendar
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import random
-<<<<<<< HEAD
-=======
+import csv
 
->>>>>>> 30fe8ba8f88421bb5f23394e1d31e914ea002b93
 def run_once():
     global total_amount
     global total_cost
     global label_income_num
+    global label_cost_num
+    global cost_limit_value
     global global_photo
     global run_once_has_run
+    global label_cost_get
+    global label_cost_and_income
+
     if not run_once_has_run:
         print("This will only run once")
         run_once_has_run = True
         total_amount = 0
         total_cost=0
+        label_cost_num = None
         label_income_num = None
+        cost_limit_value = 0
+        label_cost_get = None
+        label_cost_and_income = None
         global_photo = None
         
 run_once_has_run = False  # 初始化標記為False，表示尚未運行
@@ -31,21 +38,35 @@ run_once_has_run = False  # 初始化標記為False，表示尚未運行
 #更新本月收入金額
 def update_income_label(new_amount):
     global label_income_num
+    global total_cost
+    global total_amount
     global root
+    global label_cost_get
+    global label_cost_and_income
     label_income_num.config(text=str(new_amount))
+    label_cost_get.config(text= total_amount - total_cost)
+    label_cost_and_income.config(text='支出: '+str(total_cost)+"\n"+'收入: '+str(total_amount))
     root.update()
     root.update_idletasks()
 
-<<<<<<< HEAD
-    # 設置中文字體
-plt.rcParams['font.sans-serif'] = ['Arial Unicode MS']  # 將字體設置為支援中文的字型，例如 'Arial Unicode MS'
-plt.rcParams['axes.unicode_minus'] = False  # 解決負數無法正常顯示的問題
 
-=======
+def update_cost_label(new_amount):
+    global label_cost_num
+    global total_amount
+    global total_cost
+    global root
+    global label_cost_get
+    global label_cost_and_income
+    label_cost_num.config(text=str(new_amount))
+    label_cost_get.config(text= total_amount - total_cost)
+    label_cost_and_income.config(text='支出: '+str(total_cost)+"\n"+'收入: '+str(total_amount))
+    root.update()
+    root.update_idletasks()
+
+
 # 設置中文字體
 plt.rcParams['font.sans-serif'] = ['Arial Unicode MS']  # 將字體設置為支援中文的字型，例如 'Arial Unicode MS'
 plt.rcParams['axes.unicode_minus'] = False  # 解決負數無法正常顯示的問題
->>>>>>> 30fe8ba8f88421bb5f23394e1d31e914ea002b93
 
 def toggle_fullscreen(event=None): # 切換全螢幕模式
     state = not root.attributes('-fullscreen')
@@ -59,23 +80,23 @@ def check_login():# 檢查登入資料
     if username == "1" and password == "1":
         messagebox.showinfo("登入成功", "歡迎回來，{}".format(username))
         open_index()
-
     else:
         messagebox.showerror("登入失敗", "使用者名稱或密碼錯誤")
 
 ##以下為首頁程式選擇介面
 def open_index():  # 開啟首頁
     global label_income_num
+    global label_cost_num
     global global_photo
+    global label_cost_and_income
+    global label_cost_get
     global root
+    global total_cost
+    global total_amount
     index = Tk.Toplevel(root)
     index.title("首頁")
     index.attributes('-fullscreen', True)   # 全螢幕
     index.bind('<Escape>', toggle_fullscreen) # 按Esc切換全螢幕模式
-    bg_image_index = Image.open("使用者驗證介面2.jpg")  # 替換為你的背景圖片檔案名稱或路徑
-    bg_photo_index = ImageTk.PhotoImage(bg_image_index)
-    bg_label_index = Tk.Label(index, image=bg_photo_index)
-    bg_label_index.place(relwidth=1, relheight=1)
 
     bg_image_index = Image.open("首頁.jpg")  # 替換為你的背景圖片檔案名稱或路徑
     bg_photo_index = ImageTk.PhotoImage(bg_image_index)
@@ -86,8 +107,6 @@ def open_index():  # 開啟首頁
     current_date = date.today()  # 取得當前日期
     date_label = Tk.Label(index, text=current_date.strftime("日期: %Y-%m-%d"), font=("Arial", 40))
     date_label.place(x=440, y=50)
-
-
 
     #設定支出按鈕
     button_cost = Tk.Button(index, text="支出", command=open_cost, font=("Arial", 16), bg="white", fg="black", padx=10, pady=5, relief="raised", bd=2)
@@ -100,29 +119,18 @@ def open_index():  # 開啟首頁
     button_income.pack()
     button_income.place(x=700, y=500,width=100, height=50)
 
-    # 創建一個 Frame 作為表格容器
-    button_frame = Frame(index)
-<<<<<<< HEAD
-
-
-    button_frame.place(x=1000,y=30)
-=======
-    button_frame.place(x=5,y=50)
->>>>>>> 30fe8ba8f88421bb5f23394e1d31e914ea002b93
 
     #設定財務目標按鈕
-    button_goal = Tk.Button(button_frame , text="財務目標", command=open_goal, font=("Arial", 16), bg="white", fg="black", padx=10, pady=5, relief="raised", bd=2,borderwidth=10)
-    button_goal.grid(row=0, column=0, sticky="ew")
+    button_goal = Tk.Button(index , text="財務目標", command=open_goal, font=("Arial", 16), bg="white", fg="black", padx=10, pady=5, relief="raised", bd=2)
+    button_goal.place(x=15, y=100,width=180, height=80)
 
     #設定財務圖表分析按鈕
-    button_analysis = Tk.Button(button_frame , text="財務圖表分析", command=open_analysis, font=("Arial", 16), bg="white", fg="black", padx=10, pady=5, relief="raised", bd=2,borderwidth=10)
-    button_analysis.grid(row=1, column=0, sticky="ew")
+    button_analysis = Tk.Button(index , text="財務圖表分析", command=open_analysis, font=("Arial", 16), bg="white", fg="black", padx=10, pady=5, relief="raised", bd=2)
+    button_analysis.place(x=15, y=180,width=180, height=80)
 
     #財務分析與建議按鈕
-    button_suggestion = Tk.Button(button_frame , text="財務分析與建議", command=open_suggestion, font=("Arial", 16), bg="white", fg="black", padx=10, pady=5, relief="raised", bd=2,borderwidth=10)
-    button_suggestion.grid(row=2, column=0, sticky="ew")
-
-    button_frame.grid_columnconfigure(0, weight=1, uniform="equal") # 設定欄寬
+    button_suggestion = Tk.Button(index , text="財務分析與建議", command=open_suggestion, font=("Arial", 16), bg="white", fg="black", padx=10, pady=5, relief="raised", bd=2)
+    button_suggestion.place(x=15, y=260,width=180, height=80)
 
     #本月支出金額計算
     # 創建一個 Frame 作為框起來的區域
@@ -134,7 +142,7 @@ def open_index():  # 開啟首頁
     label_cost.pack(side=Tk.TOP, pady=5)
 
     # 創建第二個 Label
-    label_cost_num = Tk.Label(frame_labels_cost, text="此處放支出金額")
+    label_cost_num = Tk.Label(frame_labels_cost, text=total_cost)
     label_cost_num.pack(side=Tk.TOP)
     
     #本月收入金額計算
@@ -156,32 +164,25 @@ def open_index():  # 開啟首頁
     label = Tk.Label(frame_labels_surplus, text="本月盈餘金額", font=("Arial", 16))
     label.pack(side=Tk.TOP, pady=5)
     # 創建盈餘金額顯示 Label
-    label_cost_get = Tk.Label(frame_labels_surplus, text="此處放盈餘金額")
+    label_cost_get = Tk.Label(frame_labels_surplus, text=(total_amount - total_cost))
     label_cost_get.pack(side=Tk.TOP)
 
     #全部期間收支金額計算
     # 創建一個 Frame 作為框起來的區域
     frame_labels_all = Tk.Frame(index, bd=2, relief=Tk.GROOVE)
-<<<<<<< HEAD
-
-    frame_labels_all.place(x=1050, y=500, width=150, height=100)
-=======
     frame_labels_all.place(x=25, y=500, width=150, height=100)
->>>>>>> 30fe8ba8f88421bb5f23394e1d31e914ea002b93
     # 創建全部期間收支金額Label
     label = Tk.Label(frame_labels_all, text="全部期間收支金額", font=("Arial", 12))
     label.pack(side=Tk.TOP, pady=5)
     # 創建全部期間收支金額顯示 Label
-    label_cost_get = Tk.Label(frame_labels_all, text="此處放全部期間收支金額")
-    label_cost_get.pack(side=Tk.TOP)
+    label_cost_and_income = Tk.Label(frame_labels_all, text='支出: '+str(total_cost)+"\n"+'收入: '+str(total_amount))
+    label_cost_and_income.pack(side=Tk.TOP)
 
 
     image_path = "歡迎使用個人記帳管理系統.jpg"  # 替換為您的圖片檔案路徑
     original_image = Image.open(image_path)
     resized_image = original_image.resize((300, 300))
     global_photo = ImageTk.PhotoImage(resized_image)
-<<<<<<< HEAD
-=======
 
 
     
@@ -198,10 +199,11 @@ def open_index():  # 開啟首頁
 
 ###-----支出頁面-----###
 def open_cost():  # 開啟支出介面
+    global label_cost_num
     global combo
     cost = Tk.Toplevel(root)
     cost.title("支出")
-    #cost.attributes('-fullscreen', True)   # 全螢幕
+    cost.attributes('-fullscreen', True)   # 全螢幕
     label_cost = Tk.Label(cost, text="請選擇支出日期", font=("Arial", 16))
     label_cost.place(x=300, y=50)
     # 創建日期選擇器
@@ -214,12 +216,50 @@ def open_cost():  # 開啟支出介面
     record_listbox = Listbox(cost, width=50, height=10)
     record_listbox.place(x=650, y=150)
     # 創建一個函式用來取得選擇的日期
+    
+    def export_to_csv():
+        filename = "expenses.csv"  # 欲匯出的CSV檔案名稱
+        header = ["日期", "項目", "金額"]  # CSV檔案的標題行
+
+        with open(filename, mode='w', newline='', encoding='big5') as file:
+            writer = csv.writer(file)
+        
+        # 寫入標題行
+            writer.writerow(header)
+        
+        # 從紀錄列表中取得每一項目，並將其寫入CSV檔案
+            for item in record_listbox.get(0, Tk.END):
+                parts = item.split(", ")
+                date = parts[0].split(": ")[1]
+                category = parts[1].split(": ")[1]
+                amount = parts[2].split(": ")[1]
+            
+                writer.writerow([date, category, amount])
+
+    btn_export_csv = Tk.Button(cost, text="匯出", command=export_to_csv, font=("Arial", 12))
+    btn_export_csv.place(x=1100, y=350)
+    
+    def on_cost_close():
+        global total_cost
+        global label_cost_num
+        global root
+        update_cost_label(total_cost)
+        cost.destroy()
+        label_cost_num.update_idletasks()
+        root.update_idletasks()
+        root.update()
+        print("支出介面已關閉，更新首頁")
+
+    
+    btn_return = Tk.Button(cost, text="返回", command=on_cost_close ,font=("Arial", 12))
+    btn_return.place(x=1100, y=400)
+    
     def get_selected_date():
         selected_date = cal.get_date()
         selected_date_label.config(text=f"選擇的日期: {selected_date}")
 
     def add_record():
-        global total_amount
+        global total_cost
         date_str = selected_date_label.cget("text")
         category = combo_var.get()
         amount_str = cost_money_entry.get()
@@ -229,7 +269,7 @@ def open_cost():  # 開啟支出介面
             amount = float(amount_str)
 
             # 更新總金額變數
-            total_amount += amount
+            total_cost += amount
 
             # 更新列表
             record = f"{date_str}, 項目: {category}, 金額: {amount}"
@@ -239,14 +279,14 @@ def open_cost():  # 開啟支出介面
             cost_money_entry.delete(0, Tk.END)
 
             # 顯示目前總金額
-            目前_累計金額_顯示.config(text= total_amount)
+            目前_累計金額_顯示.config(text= total_cost)
 
         except ValueError:
             # 處理金額不是有效數字的情況
             print("請輸入有效的金額。")
     
     def delete_selected():
-        global total_amount
+        global total_cost
 
         selected_index = record_listbox.curselection()
         if selected_index:
@@ -261,13 +301,13 @@ def open_cost():  # 開啟支出介面
                 deleted_amount = float(amount_str)
 
                 # 更新總金額變數
-                total_amount -= deleted_amount
+                total_cost -= deleted_amount
 
                 # 刪除列表中的項目
                 record_listbox.delete(selected_index)
 
                 # 顯示更新後的總金額
-                目前_累計金額_顯示.config(text=total_amount)
+                目前_累計金額_顯示.config(text=total_cost)
 
             except ValueError:
                 # 處理金額不是有效數字的情況
@@ -369,7 +409,7 @@ def open_cost():  # 開啟支出介面
 def open_income():  # 開啟收入介面
     income = Tk.Toplevel(root)
     income.title("收入")
-    #income.attributes('-fullscreen', True)   # 全螢幕
+    income.attributes('-fullscreen', True)   # 全螢幕
     label_income = Tk.Label(income, text="請選擇收入日期", font=("Arial", 16))
     label_income.place(x=300, y=50)
     # 創建日期選擇器
@@ -381,6 +421,28 @@ def open_income():  # 開啟收入介面
     
     record_listbox = Listbox(income, width=50, height=10)
     record_listbox.place(x=650, y=150)
+
+    def export_to_csv():
+        filename = "income.csv"  # 欲匯出的CSV檔案名稱
+        header = ["日期", "項目", "金額"]  # CSV檔案的標題行
+
+        with open(filename, mode='w', newline='', encoding='big5') as file:
+            writer = csv.writer(file)
+        
+        # 寫入標題行
+            writer.writerow(header)
+        
+        # 從紀錄列表中取得每一項目，並將其寫入CSV檔案
+            for item in record_listbox.get(0, Tk.END):
+                parts = item.split(", ")
+                date = parts[0].split(": ")[1]
+                category = parts[1].split(": ")[1]
+                amount = parts[2].split(": ")[1]
+            
+                writer.writerow([date, category, amount])
+
+    btn_export_csv = Tk.Button(income, text="匯出", command=export_to_csv, font=("Arial", 12))
+    btn_export_csv.place(x=1100, y=350)
 
     def on_income_close():
         global total_amount
@@ -527,7 +589,6 @@ def open_income():  # 開啟收入介面
     目前_累計金額 .place(x=1100, y=500)
     目前_累計金額_顯示 = Tk.Label(income,font=("Arial", 18))
     目前_累計金額_顯示.place(x=1150, y=550)
->>>>>>> 30fe8ba8f88421bb5f23394e1d31e914ea002b93
 
     # 創建新增圓餅圖的按鈕
     btn_add_record = Tk.Button(income, text="新增圓餅圖", command=open_income_pie_chart, font=("Arial", 12))
@@ -549,11 +610,12 @@ def open_income():  # 開啟收入介面
     
     income.mainloop()
 
-<<<<<<< HEAD
-=======
 ###-----財務目標頁面-----###
 def open_goal():
     global selected_cost_limit_label, selected_income_goal_label,selected_cost_limit,selected_income_goal
+    global total_cost
+    global cost_limit_value
+    global label_相差_num
     goal = Tk.Toplevel(root)
     goal.title("財務目標")
     #goal.attributes('-fullscreen', True)   # 全螢幕
@@ -564,11 +626,11 @@ def open_goal():
     button_cost_limit.pack()
     button_cost_limit.place(x=100, y=300,width=200, height=80)
     #設定儲蓄目標按鈕
-    button_income_goal = Tk.Button(goal , text="設定儲蓄目標", command=open_income_goal, font=("Arial", 16), bg="white", fg="black", padx=10, pady=5, relief="raised", bd=2,borderwidth=10)
+    button_income_goal = Tk.Button(goal , text="設定收入目標", command=open_income_goal, font=("Arial", 16), bg="white", fg="black", padx=10, pady=5, relief="raised", bd=2,borderwidth=10)
     button_income_goal.pack()
     button_income_goal.place(x=100, y=400,width=200, height=80)
     # 創建一個 Label 用來顯示目前支出
-    selected_cost_limit = Tk.Label(goal, text="0", font=("Arial", 16))
+    selected_cost_limit = Tk.Label(goal, text=total_cost, font=("Arial", 16))
     selected_cost_limit.place(x=500, y=325)
     # 創建一個 Label 用來顯示目前收入
     selected_income_goal = Tk.Label(goal, text="0", font=("Arial", 16))
@@ -580,7 +642,7 @@ def open_goal():
     selected_slash2 = Tk.Label(goal, text="/", font=("Arial", 16))
     selected_slash2.place(x=600, y=325)
     # 創建一個 Label 用來顯示設定的支出上限
-    selected_cost_limit_label = Tk.Label(goal, text="0", font=("Arial", 16))
+    selected_cost_limit_label = Tk.Label(goal, text=cost_limit_value, font=("Arial", 16))
     selected_cost_limit_label.place(x=700, y=325)
     # 創建一個 Label 用來顯示設定的儲蓄目標
     selected_income_goal_label = Tk.Label(goal, text="0", font=("Arial", 16))
@@ -598,8 +660,19 @@ def open_goal():
     resized_image = original_image.resize((100, 1000))
     global_photo = ImageTk.PhotoImage(resized_image)
 
+    label_相差 = Tk.Label(goal, text="離目標相差：", font=("Arial", 20))
+    label_相差.place(x=800, y=325)
+    label_相差_num = Tk.Label(goal, text=0,font=("Arial", 20))
+    label_相差_num.place(x=1000, y=325)
+    label_相差_num.config(text=(int(cost_limit_value)-total_cost))
 
-    
+
+
+    label_相差_income = Tk.Label(goal, text="離目標相差：", font=("Arial", 20))
+    label_相差_income.place(x=800, y=425)
+    label_相差_num_income = Tk.Label(goal, text=(cost_limit_value-total_cost),font=("Arial", 20))
+    label_相差_num_income.place(x=1000, y=425)
+
 
     # 在視窗中顯示圖片
     image_label = Tk.Label(goal, image=global_photo)
@@ -609,17 +682,21 @@ def open_goal():
     goal.mainloop()
     
 def open_cost_limit():
+    global label_相差_num
     def set_limit_cost():
         global cost_limit_value
-        cost_value = cost_money_entry.get()
+        cost_value = cost_money_entry.get() 
         # 可在這裡進行其他操作或儲存值
         cost_limit_value = cost_value  # 將值存儲到全局變數中
-        selected_cost_limit_label.config(text=cost_limit_value)  # 更新主要介面的標籤
+        selected_cost_limit_label.config(text=cost_limit_value)# 更新主要介面的標籤
+        label_相差_num.config(text=(int(cost_limit_value)-total_cost))
         cost_limit.destroy()
     cost_limit = Tk.Toplevel(root)
     cost_limit.title("設定支出上限")
     cost_money_entry = Tk.Entry(cost_limit, width=22)
     cost_money_entry.place(x=20, y=50)
+    selected_cost_limit_label.config(text=cost_limit_value)
+    label_相差_num.config(text=(int(cost_limit_value)-total_cost))
     button_cost_limit = Tk.Button(cost_limit, text="設定", command=set_limit_cost, font=("Arial", 12), bg="white", fg="black", padx=10, pady=5, relief="raised", bd=2)
     button_cost_limit.pack()
     button_cost_limit.place(x=50, y=80, width=100, height=50)
@@ -639,8 +716,6 @@ def open_income_goal():
     button_income_goal = Tk.Button(income_goal, text="設定", command=set_goal_income, font=("Arial", 12), bg="white", fg="black", padx=10, pady=5, relief="raised", bd=2)
     button_income_goal.pack()
     button_income_goal.place(x=50, y=80, width=100, height=50)
-
-
 
 def open_analysis():  # 開啟財務圖表分析介面
     analysis = Tk.Toplevel(root)
@@ -720,5 +795,4 @@ root.after(0, run_once)
 
 # 啟動主迴圈
 root.mainloop()
->>>>>>> 30fe8ba8f88421bb5f23394e1d31e914ea002b93
 
