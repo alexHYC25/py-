@@ -752,4 +752,3 @@ root.after(0, run_once)
 
 # 啟動主迴圈
 root.mainloop()
-
