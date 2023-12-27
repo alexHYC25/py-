@@ -230,7 +230,7 @@ def open_index():  # 開啟首頁
     update_csv_content(tree)
 
 # 創建一個函式用來更新 CSV 內容
-    def update_csv_content(tree2):
+    def update_csv_content1(tree2):
         # 清空 Treeview 中的所有項目
         tree2.delete(*tree2.get_children())
 
@@ -246,7 +246,7 @@ def open_index():  # 開啟首頁
         
 
         # 每隔 5 秒调用一次函数
-        tree2.after(5000, update_csv_content, tree2)
+        tree2.after(5000, update_csv_content1, tree2)
 
     # 创建 Treeview 用于显示 CSV 内容
     tree2 = ttk.Treeview(index)
@@ -266,7 +266,7 @@ def open_index():  # 開啟首頁
     tree2.place(x=900, y=400, width=400, height=200)
 
     # 定时更新 CSV 内容
-    update_csv_content(tree2)
+    update_csv_content1(tree2)
 
     index.mainloop()
 
