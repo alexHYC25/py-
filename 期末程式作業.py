@@ -19,6 +19,8 @@ def run_once():
     global run_once_has_run
     global label_cost_get
     global label_cost_and_income
+    global income_goal_value
+    global label_相差_num_income
 
     if not run_once_has_run:
         print("This will only run once")
@@ -29,6 +31,7 @@ def run_once():
         label_income_num = None
         cost_limit_value = 0
         label_cost_get = None
+        income_goal_value = 0
         label_cost_and_income = None
         global_photo = None
         
@@ -571,8 +574,11 @@ def open_income():  # 開啟收入介面
 def open_goal():
     global selected_cost_limit_label, selected_income_goal_label,selected_cost_limit,selected_income_goal
     global total_cost
+    global total_amount
     global cost_limit_value
     global label_相差_num
+    global income_goal_value
+    global label_相差_num_income
     goal = Tk.Toplevel(root)
     goal.title("財務目標")
     #goal.attributes('-fullscreen', True)   # 全螢幕
@@ -590,7 +596,7 @@ def open_goal():
     selected_cost_limit = Tk.Label(goal, text=total_cost, font=("Arial", 16))
     selected_cost_limit.place(x=500, y=325)
     # 創建一個 Label 用來顯示目前收入
-    selected_income_goal = Tk.Label(goal, text="0", font=("Arial", 16))
+    selected_income_goal = Tk.Label(goal, text=total_amount, font=("Arial", 16))
     selected_income_goal.place(x=500, y=425)
     # 創建一個 Label 用來顯示/
     selected_slash1 = Tk.Label(goal, text="/", font=("Arial", 16))
@@ -602,7 +608,7 @@ def open_goal():
     selected_cost_limit_label = Tk.Label(goal, text=cost_limit_value, font=("Arial", 16))
     selected_cost_limit_label.place(x=700, y=325)
     # 創建一個 Label 用來顯示設定的儲蓄目標
-    selected_income_goal_label = Tk.Label(goal, text="0", font=("Arial", 16))
+    selected_income_goal_label = Tk.Label(goal, text=income_goal_value, font=("Arial", 16))
     selected_income_goal_label.place(x=700, y=425)
     # 創建一個 Label 用來顯示「目標」
     show_goal = Tk.Label(goal, text="目標", font=("Arial", 20))
@@ -627,7 +633,7 @@ def open_goal():
 
     label_相差_income = Tk.Label(goal, text="離目標相差：", font=("Arial", 20))
     label_相差_income.place(x=800, y=425)
-    label_相差_num_income = Tk.Label(goal, text=(cost_limit_value-total_cost),font=("Arial", 20))
+    label_相差_num_income = Tk.Label(goal, text=(int(income_goal_value)-total_amount),font=("Arial", 20))
     label_相差_num_income.place(x=1000, y=425)
 
 
@@ -661,10 +667,12 @@ def open_cost_limit():
 def open_income_goal():
     def set_goal_income():
         global income_goal_value
+        global label_相差_num_income
         income_value = income_money_entry.get()
         # 可在這裡進行其他操作或儲存值
         income_goal_value = income_value  # 將值存儲到全局變數中
-        selected_income_goal_label.config(text=income_goal_value)  # 更新主要介面的標籤
+        selected_income_goal_label.config(text=income_goal_value)# 更新主要介面的標籤
+        label_相差_num_income.config(text=(int(income_goal_value)-total_amount))
         income_goal.destroy()
     income_goal = Tk.Toplevel(root)
     income_goal.title("設定儲蓄目標")
